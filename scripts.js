@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             weeklyTotal: 0,
             monthlyTotal: 0, // <-- ADD THIS
             yearlyTotal: 0, // <-- ADD THIS
+            total: 0,
             lastWorkoutDate: null,
             currentWeekStartDate: null,
             currentMonthStartDate: null, // <-- ADD THIS
