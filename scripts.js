@@ -256,51 +256,55 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Main Timer Logic ---
     function startMainTimer(initialDuration) {
         let totalSeconds = initialDuration;
+
         mainCountdownInterval = setInterval(() => {
             if (totalSeconds < 0) {
-                if (unlockedSounds.end.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * soundFiles.end.length);
-                    const randomSoundFile = soundFiles.end[randomIndex];
-                    playSound(randomSoundFile);
-                }
+                // --- 1. PLAY THE FINAL SOUND ---
+                // Play a random end sound by passing the FILENAME
+                const randomIndex = Math.floor(Math.random() * soundFiles.end.length);
+                const randomSoundFile = soundFiles.end[randomIndex];
+                playSound(randomSoundFile);
 
+                // --- 2. STOP THE TIMER AND DO THE REST ---
                 clearInterval(mainCountdownInterval);
                 timerDisplay.textContent = "Time's up!";
-                loadData();
 
                 const weight = parseInt(weightSelect.value, 10);
                 const duration = parseInt(secondsInput.value, 10);
                 const exercise = exerciseSelect.value;
                 const intensity = intensitySelect.value;
-
                 const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
 
+                // Add calories to all totals
                 appData.workout.dailyTotal += caloriesThisRound;
                 appData.workout.weeklyTotal += caloriesThisRound;
                 appData.workout.monthlyTotal += caloriesThisRound;
                 appData.workout.yearlyTotal += caloriesThisRound;
-                appData.workout.total += caloriesThisRound;
+                if (appData.workout.total !== undefined) {
+                    appData.workout.total += caloriesThisRound;
+                }
+
                 saveData();
                 updateDisplay();
 
                 memeElement.style.display = 'block';
-                timerDisplay.style.display = 'block';
+                timerDisplay.style.display = 'none';
 
-                if (unlockedSounds.end.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * unlockedSounds.end.length);
-                    playSound(unlockedSounds.end[randomIndex]);
-                    memeTimeout = setTimeout(() => {
-                        memeElement.style.display = 'none';
-                        timerDisplay.style.display = 'none';
-                    }, 30000);
-                }
+                memeTimeout = setTimeout(() => {
+                    memeElement.style.display = 'none';
+                    timerDisplay.style.display = 'block';
+                }, 30000);
 
                 timerDisplay.classList.remove('pre-countdown');
+
             } else {
-                if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(unlockedSounds.remaining30);
-                if (totalSeconds === 20) playSound(unlockedSounds.remaining20);
-                if (totalSeconds === 10) playSound(unlockedSounds.remaining10);
-                if ((initialDuration - totalSeconds === 30) && (initialDuration >= 61)) playSound(unlockedSounds.elapsed30);
+                // --- THIS IS THE CORRECTED PART ---
+                // Pass the FILENAMES from soundFiles directly to playSound
+                if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(soundFiles.remaining30);
+                if (totalSeconds === 20) playSound(soundFiles.remaining20);
+                if (totalSeconds === 10) playSound(soundFiles.remaining10);
+                if ((initialDuration - totalSeconds === 30) && (initialDuration >= 61)) playSound(soundFiles.elapsed30);
+                // --- END OF CORRECTION ---
 
                 const mins = Math.floor(totalSeconds / 60);
                 const secs = totalSeconds % 60;
@@ -309,6 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
+
 
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
