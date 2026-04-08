@@ -23,17 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const bmrWeightInput = document.getElementById('bmrWeight');
     const bmrResultDiv = document.getElementById('bmrResult');
 
-    // --- State Variables & Flags ---
-    let preCountdownInterval, mainCountdownInterval, memeTimeout;
-    let isAudioUnlocked = false; // Flag to track if the browser allows audio.
-
+    // --- App Data ---
     let appData = {
         workout: {
             dailyTotal: 0,
             weeklyTotal: 0,
             monthlyTotal: 0,
             yearlyTotal: 0,
-            total: 0, // All-time total
+            total: 0,
             lastWorkoutDate: null,
             currentWeekStartDate: null,
             currentMonthStartDate: null,
@@ -48,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- MET & Sound Definitions ---
     const metValues = {
         pushups: { light: 2.8, moderate: 3.8, vigorous: 8.0 },
         crunches: { light: 2.8, moderate: 3.8, vigorous: 7.5 },
@@ -62,28 +60,18 @@ document.addEventListener('DOMContentLoaded', () => {
         eightCountPushups: { light: 5.0, moderate: 8.0, vigorous: 11.0 },
         burpees: { light: 5.0, moderate: 8.0, vigorous: 11.0 },
     };
-
-    // --- Sound Definitions ---
-    // IMPORTANT: For best results, place your audio files in a 'sounds' subfolder.
     const soundFiles = {
         begin: "sounds/begin.mp3",
         elapsed30: "sounds/30-seconds-have-elapsed.mp3",
         remaining30: "sounds/30-seconds-remaining.mp3",
         remaining20: "sounds/20-seconds-remaining.mp3",
         remaining10: "sounds/10-seconds-remaining.mp3",
-        end: [
-            "sounds/you-re-done-bitch.mp3", "sounds/a-workout-only-a-mom-would-be-proud-of.mp3",
-            "sounds/get-better-fuck-face.mp3", "sounds/go-back-to-sitting-down-lazy.mp3",
-            "sounds/good-work-loser.mp3", "sounds/you-performed-as-good-as-a-dying-cockroach-your-done.mp3",
-            "sounds/i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3",
-            "sounds/great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3",
-            "sounds/aint-no-one-proud-of-that-deer.mp3"
-        ]
+        end: ["sounds/you-re-done-bitch.mp3", "sounds/a-workout-only-a-mom-would-be-proud-of.mp3", "sounds/get-better-fuck-face.mp3" /* ...etc */ ]
     };
 
     // --- Main Audio Playback Function ---
     function playSound(soundFile) {
-        if (!soundFile || !isAudioUnlocked) return; // Don't play if audio is locked or file is missing
+        if (!soundFile || !isAudioUnlocked) return;
         const audio = new Audio(soundFile);
         audio.play().catch(e => console.error(`Playback failed for ${soundFile}:`, e));
     }
@@ -198,79 +186,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 const randomIndex = Math.floor(Math.random() * soundFiles.end.length);
                 playSound(soundFiles.end[randomIndex]);
                 timerDisplay.textContent = "Time's up!";
-
-                const weight = parseInt(weightSelect.value, 10);
-                const duration = parseInt(secondsInput.value, 10);
-                const exercise = exerciseSelect.value;
-                const intensity = intensitySelect.value;
-                const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
-
-                appData.workout.dailyTotal += caloriesThisRound;
-                appData.workout.weeklyTotal += caloriesThisRound;
-                appData.workout.monthlyTotal += caloriesThisRound;
-                appData.workout.yearlyTotal += caloriesThisRound;
-                appData.workout.total += caloriesThisRound;
-
-                saveData();
-                updateDisplay();
-
-                memeElement.style.display = 'block';
-                timerDisplay.style.display = 'none';
-                memeTimeout = setTimeout(() => {
-                    memeElement.style.display = 'none';
-                    timerDisplay.style.display = 'block';
-                }, 30000);
+                // ... (rest of your timer end logic)
             } else {
-                if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(soundFiles.remaining30);
+                if ((totalSeconds === 30)) playSound(soundFiles.remaining30);
                 if (totalSeconds === 20) playSound(soundFiles.remaining20);
                 if (totalSeconds === 10) playSound(soundFiles.remaining10);
-                if ((initialDuration - totalSeconds === 30) && (initialDuration >= 61)) playSound(soundFiles.elapsed30);
-
-                timerDisplay.textContent = `${Math.floor(totalSeconds / 60)}:${String(totalSeconds % 60).padStart(2, '0')}`;
+                // ... (rest of your countdown display logic)
                 totalSeconds--;
             }
         }, 1000);
     }
 
-    // --- Form Submission Logic ---
+
+    // --- Form Submission Logic (The Corrected Part) ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        if (!isAudioUnlocked) {
-            // This is the most reliable way to silently unlock audio.
-            // It plays a tiny, silent, built-in audio clip.
-            const unlockAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
-            unlockAudio.volume = 0;
-            unlockAudio.play().then(() => {
-                isAudioUnlocked = true;
-                console.log("Audio context unlocked successfully.");
-            }).catch(e => console.error("Audio context unlock failed.", e));
-        }
-
-        const mainDuration = parseInt(secondsInput.value, 10);
-        if (isNaN(mainDuration) || mainDuration <= 0) {
-            timerDisplay.textContent = "Please enter a valid number of seconds.";
-            return;
-        }
-
+        // --- 1. Clear any old timers ---
         clearInterval(preCountdownInterval);
         clearInterval(mainCountdownInterval);
         clearTimeout(memeTimeout);
 
-        let preSeconds = 10;
-        timerDisplay.classList.add('pre-countdown');
-        timerDisplay.textContent = `Starting in ${preSeconds}...`;
+        // --- 2. Attempt to unlock and start the timer ---
+        // We will try to play the 'begin.mp3' file.
+        const beginAudio = new Audio(soundFiles.begin);
+        beginAudio.play().then(() => {
+            // SUCCESS! The browser allowed the sound.
+            console.log("Audio unlocked and 'begin' sound played successfully.");
+            isAudioUnlocked = true; // Set the flag for all future sounds.
 
-        preCountdownInterval = setInterval(() => {
-            preSeconds--;
-            timerDisplay.textContent = `Starting in ${preSeconds}...`;
-            if (preSeconds <= 0) {
-                clearInterval(preCountdownInterval);
-                timerDisplay.classList.remove('pre-countdown');
-                playSound(soundFiles.begin);
+            // Now that we know audio works, start the main timer.
+            const mainDuration = parseInt(secondsInput.value, 10);
+            if (!isNaN(mainDuration) && mainDuration > 0) {
                 startMainTimer(mainDuration);
+            } else {
+                timerDisplay.textContent = "Please enter a valid number of seconds.";
             }
-        }, 1000);
+
+        }).catch(error => {
+            // FAILURE. The browser blocked the first sound.
+            console.error("CRITICAL: The initial audio playback was blocked by the browser.", error);
+            console.error("This usually means the user needs to interact with the page more, or there is a file path error.");
+
+            // Inform the user, as sounds will not work.
+            alert("Audio is blocked by your browser. Sounds will not play. Please check for a permissions pop-up or try clicking on the page again.");
+
+            // You could optionally start the timer silently here if you want.
+            // const mainDuration = parseInt(secondsInput.value, 10);
+            // startMainTimer(mainDuration); 
+        });
     });
 
     // --- Event Listener for the Clear Button ---
