@@ -302,7 +302,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
-                        audio.play().then(() => audio.pause()).catch(e => {});
+                        audio.play().then(() => audio.pause()).catch(e => {
+                            console.error(`Failed to unlock sound: ${fileName}`, e);
+                        });
                         unlockedSounds.end.push(audio);
                     });
                 } else {
