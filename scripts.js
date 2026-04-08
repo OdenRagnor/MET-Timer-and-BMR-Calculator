@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Calorie Calculation ---
     const calculateCalories = (weightInPounds, durationInSeconds, exercise, intensity) => {
-        const MET = metValues[exercise] ? .[intensity] || 7.0;
+        const MET = metValues[exercise][intensity] || 7.0;
         const weightInKg = weightInPounds / 2.20462;
         const durationInMinutes = durationInSeconds / 60;
         return ((MET * 3.5 * weightInKg) / 200) * durationInMinutes;
