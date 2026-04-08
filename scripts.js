@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Form Submission Logic ---
-    /*timerForm.addEventListener('submit', function(event) {
+    timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
         if (!unlockedSounds.begin) {
             for (const key in soundFiles) {
@@ -318,48 +318,48 @@ document.addEventListener('DOMContentLoaded', () => {
                     unlockedSounds[key] = audio;
                 }
             }
-        }*/
-
-    const mainDuration = parseInt(secondsInput.value, 10);
-    if (isNaN(mainDuration) || mainDuration <= 0) {
-        timerDisplay.textContent = "Please enter a valid number of seconds.";
-        return;
-    }
-
-    clearInterval(preCountdownInterval);
-    clearInterval(mainCountdownInterval);
-    clearTimeout(memeTimeout);
-
-    let preSeconds = 10;
-    timerDisplay.classList.add('pre-countdown');
-    timerDisplay.textContent = `Starting in ${preSeconds}...`;
-
-    preCountdownInterval = setInterval(() => {
-        preSeconds--;
-        timerDisplay.textContent = `Starting in ${preSeconds}...`;
-        if (preSeconds <= 0) {
-            clearInterval(preCountdownInterval);
-            timerDisplay.classList.remove('pre-countdown');
-            playSound(unlockedSounds.begin);
-            startMainTimer(mainDuration);
         }
-    }, 1000);
-});
 
-// --- Event Listener for the Clear Button ---
-clearCaloriesBtn.addEventListener('click', () => {
-    if (confirm("Are you sure you want to clear all progress?")) {
-        appData.workout.dailyTotal = 0;
-        appData.workout.weeklyTotal = 0;
-        appData.workout.monthlyTotal = 0;
-        appData.workout.yearlyTotal = 0;
-        appData.workout.total = 0;
-        saveData();
-        updateDisplay();
-        console.log("Weekly progress has been cleared.");
-    }
-});
+        const mainDuration = parseInt(secondsInput.value, 10);
+        if (isNaN(mainDuration) || mainDuration <= 0) {
+            timerDisplay.textContent = "Please enter a valid number of seconds.";
+            return;
+        }
 
-// --- INITIAL PAGE LOAD ---
-loadData();
+        clearInterval(preCountdownInterval);
+        clearInterval(mainCountdownInterval);
+        clearTimeout(memeTimeout);
+
+        let preSeconds = 10;
+        timerDisplay.classList.add('pre-countdown');
+        timerDisplay.textContent = `Starting in ${preSeconds}...`;
+
+        preCountdownInterval = setInterval(() => {
+            preSeconds--;
+            timerDisplay.textContent = `Starting in ${preSeconds}...`;
+            if (preSeconds <= 0) {
+                clearInterval(preCountdownInterval);
+                timerDisplay.classList.remove('pre-countdown');
+                playSound(unlockedSounds.begin);
+                startMainTimer(mainDuration);
+            }
+        }, 1000);
+    });
+
+    // --- Event Listener for the Clear Button ---
+    clearCaloriesBtn.addEventListener('click', () => {
+        if (confirm("Are you sure you want to clear all progress?")) {
+            appData.workout.dailyTotal = 0;
+            appData.workout.weeklyTotal = 0;
+            appData.workout.monthlyTotal = 0;
+            appData.workout.yearlyTotal = 0;
+            appData.workout.total = 0;
+            saveData();
+            updateDisplay();
+            console.log("Weekly progress has been cleared.");
+        }
+    });
+
+    // --- INITIAL PAGE LOAD ---
+    loadData();
 });
