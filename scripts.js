@@ -302,45 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // --- REVISED AUDIO UNLOCK LOGIC ---
-        if (!unlockedSounds.begin) {
-            console.log("Unlocking audio context silently...");
-            for (const key in soundFiles) {
-                const fileOrFiles = soundFiles[key];
-
-                if (Array.isArray(fileOrFiles)) {
-                    // This handles the 'end' array
-                    fileOrFiles.forEach(fileName => {
-                        const audio = new Audio(fileName);
-                        audio.muted = true; // Mute it first!
-
-                        audio.play().then(() => {
-                            // Once playback starts, pause and unmute it for later
-                            audio.pause();
-                            audio.muted = false;
-                        }).catch(e => {
-                            console.error(`Failed to unlock sound: ${fileName}`, e);
-                        });
-
-                        unlockedSounds.end.push(audio);
-                    });
-                } else {
-                    // This handles all other single audio files
-                    const audio = new Audio(fileOrFiles);
-                    audio.muted = true; // Mute it first!
-
-                    audio.play().then(() => {
-                        // Pause and unmute for later
-                        audio.pause();
-                        audio.muted = false;
-                    }).catch(e => {
-                        console.error(`Failed to unlock sound: ${fileOrFiles}`, e);
-                    });
-
-                    unlockedSounds[key] = audio;
-                }
-            }
-        }
+        // The complex "unlock" loop has been removed. We don't need it.
+        // We will create the sounds when we need them.
 
         const mainDuration = parseInt(secondsInput.value, 10);
         if (isNaN(mainDuration) || mainDuration <= 0) {
@@ -359,14 +322,23 @@ document.addEventListener('DOMContentLoaded', () => {
         preCountdownInterval = setInterval(() => {
             preSeconds--;
             timerDisplay.textContent = `Starting in ${preSeconds}...`;
+
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
-                playSound(unlockedSounds.begin);
+
+                // --- THIS IS THE ONLY "UNLOCK" WE NEED ---
+                // Play the 'begin' sound. This user-initiated action
+                // unlocks the audio context for all future sounds.
+                const beginSound = new Audio(soundFiles.begin);
+                playSound(beginSound);
+                // --- END OF THE ONLY UNLOCK ---
+
                 startMainTimer(mainDuration);
             }
         }, 1000);
     });
+
 
     // --- Event Listener for the Clear Button ---
     clearCaloriesBtn.addEventListener('click', () => {
