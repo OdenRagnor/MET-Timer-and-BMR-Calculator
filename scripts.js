@@ -80,12 +80,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let unlockedSounds = { end: [] };
 
     // --- Helper Function: playSound ---
-    function playSound(audioObject) {
-        if (audioObject) {
-            audioObject.currentTime = 0;
-            audioObject.play().catch(e => console.error(`Sound playback failed:`, e));
+    function playSound(soundSource) {
+        if (!soundSource) return; // Do nothing if the source is invalid
+
+        let audio;
+        // Check if we were given a string (like a filename)
+        if (typeof soundSource === 'string') {
+            audio = new Audio(soundSource);
         }
+        // Otherwise, assume we were given an already-created Audio object
+        else {
+            audio = soundSource;
+        }
+
+        audio.currentTime = 0;
+        audio.play().catch(e => console.error(`Sound playback failed:`, e));
     }
+
 
     // --- Date Helper Functions ---
     const getTodayISO = () => new Date().toISOString().split('T')[0];
