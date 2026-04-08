@@ -259,8 +259,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mainCountdownInterval = setInterval(() => {
             if (totalSeconds < 0) {
                 if (unlockedSounds.end.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * unlockedSounds.end.length);
-                    playSound(unlockedSounds.end[randomIndex]);
+                    const randomIndex = Math.floor(Math.random() * soundFiles.end.length);
+                    const randomSoundFile = soundFiles.end[randomIndex];
+                    playSound(randomSoundFile);
                 }
 
                 clearInterval(mainCountdownInterval);
