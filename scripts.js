@@ -303,28 +303,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
-                        audio.volume = 0; // Mute the audio
-                        audio.play().then(() => {
-                            audio.pause();
-                            audio.volume = 1.0; // Unmute for future use
-                        }).catch(e => {
-                            console.error("Audio unlock failed for:", fileName, e);
-                        });
+                        audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
                     });
                 } else {
                     const audio = new Audio(fileOrFiles);
-                    audio.volume = 0; // Mute the audio
-                    audio.play().then(() => {
-                        audio.pause();
-                        audio.volume = 1.0; // Unmute for future use
-                    }).catch(e => {
-                        console.error("Audio unlock failed for:", fileOrFiles, e);
-                    });
+                    audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
                 }
             }
-            unlockedSounds.begin = true; // Mark sounds as unlocked
         }
 
         const mainDuration = parseInt(secondsInput.value, 10);
