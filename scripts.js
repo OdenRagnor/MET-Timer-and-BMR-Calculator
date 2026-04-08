@@ -301,20 +301,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
+
+        // --- REVISED AUDIO UNLOCK LOGIC ---
         if (!unlockedSounds.begin) {
+            console.log("Unlocking audio context silently...");
             for (const key in soundFiles) {
                 const fileOrFiles = soundFiles[key];
+
                 if (Array.isArray(fileOrFiles)) {
+                    // This handles the 'end' array
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
-                        audio.play().then(() => audio.pause()).catch(e => {
+                        audio.muted = true; // Mute it first!
+
+                        audio.play().then(() => {
+                            // Once playback starts, pause and unmute it for later
+                            audio.pause();
+                            audio.muted = false;
+                        }).catch(e => {
                             console.error(`Failed to unlock sound: ${fileName}`, e);
                         });
+
                         unlockedSounds.end.push(audio);
                     });
                 } else {
+                    // This handles all other single audio files
                     const audio = new Audio(fileOrFiles);
-                    audio.play().then(() => audio.pause()).catch(e => {});
+                    audio.muted = true; // Mute it first!
+
+                    audio.play().then(() => {
+                        // Pause and unmute for later
+                        audio.pause();
+                        audio.muted = false;
+                    }).catch(e => {
+                        console.error(`Failed to unlock sound: ${fileOrFiles}`, e);
+                    });
+
                     unlockedSounds[key] = audio;
                 }
             }
