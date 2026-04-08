@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearCaloriesBtn = document.getElementById('clearCaloriesBtn');
     const exerciseSelect = document.getElementById('exercise');
     const intensitySelect = document.getElementById('intensity');
-
-
-    // --- BMR DOM Elements ---
     const calculateBmrBtn = document.getElementById('calculateBmrBtn');
     const ageInput = document.getElementById('age');
     const sexSelect = document.getElementById('sex');
@@ -25,30 +22,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const heightInInput = document.getElementById('height_in');
     const bmrWeightInput = document.getElementById('bmrWeight');
     const bmrResultDiv = document.getElementById('bmrResult');
-    const weightInput = document.getElementById('weight');
 
-    // --- State Variables ---
+    // --- State Variables & Flags ---
     let preCountdownInterval, mainCountdownInterval, memeTimeout;
+    let isAudioUnlocked = false; // Flag to track if the browser allows audio.
 
-    // Combined state object for all user and workout data
     let appData = {
         workout: {
             dailyTotal: 0,
             weeklyTotal: 0,
-            monthlyTotal: 0, // <-- ADD THIS
-            yearlyTotal: 0, // <-- ADD THIS
+            monthlyTotal: 0,
+            yearlyTotal: 0,
+            total: 0, // All-time total
             lastWorkoutDate: null,
             currentWeekStartDate: null,
-            currentMonthStartDate: null, // <-- ADD THIS
-            currentYearStartDate: null // <-- ADD THIS
+            currentMonthStartDate: null,
+            currentYearStartDate: null
         },
         user: {
             age: null,
             sex: 'male',
             heightFt: null,
             heightIn: null,
-            weightLbs: null,
-            weight: null
+            weightLbs: null
         }
     };
 
@@ -67,206 +63,140 @@ document.addEventListener('DOMContentLoaded', () => {
         burpees: { light: 5.0, moderate: 8.0, vigorous: 11.0 },
     };
 
-
     // --- Sound Definitions ---
+    // IMPORTANT: For best results, place your audio files in a 'sounds' subfolder.
     const soundFiles = {
-        begin: "begin.mp3",
-        elapsed30: "30-seconds-have-elapsed.mp3",
-        remaining30: "30-seconds-remaining.mp3",
-        remaining20: "20-seconds-remaining.mp3",
-        remaining10: "10-seconds-remaining.mp3",
-        end: ["you-re-done-bitch.mp3", "a-workout-only-a-mom-would-be-proud-of.mp3", "get-better-fuck-face.mp3", "go-back-to-sitting-down-lazy.mp3", "good-work-loser.mp3", "you-re-done-bitch.mp3", "you-performed-as-good-as-a-dying-cockroach-your-done.mp3", "i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3", "great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3", "aint-no-one-proud-of-that-deer.mp3"]
+        begin: "sounds/begin.mp3",
+        elapsed30: "sounds/30-seconds-have-elapsed.mp3",
+        remaining30: "sounds/30-seconds-remaining.mp3",
+        remaining20: "sounds/20-seconds-remaining.mp3",
+        remaining10: "sounds/10-seconds-remaining.mp3",
+        end: [
+            "sounds/you-re-done-bitch.mp3", "sounds/a-workout-only-a-mom-would-be-proud-of.mp3",
+            "sounds/get-better-fuck-face.mp3", "sounds/go-back-to-sitting-down-lazy.mp3",
+            "sounds/good-work-loser.mp3", "sounds/you-performed-as-good-as-a-dying-cockroach-your-done.mp3",
+            "sounds/i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3",
+            "sounds/great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3",
+            "sounds/aint-no-one-proud-of-that-deer.mp3"
+        ]
     };
-    let unlockedSounds = { end: [] };
 
-    // --- Helper Function: playSound ---
-    function playSound(soundSource) {
-        if (!soundSource) return; // Do nothing if the source is invalid
-
-        let audio;
-        // Check if we were given a string (like a filename)
-        if (typeof soundSource === 'string') {
-            audio = new Audio(soundSource);
-        }
-        // Otherwise, assume we were given an already-created Audio object
-        else {
-            audio = soundSource;
-        }
-
-        audio.currentTime = 0;
-        audio.play().catch(e => console.error(`Sound playback failed:`, e));
+    // --- Main Audio Playback Function ---
+    function playSound(soundFile) {
+        if (!soundFile || !isAudioUnlocked) return; // Don't play if audio is locked or file is missing
+        const audio = new Audio(soundFile);
+        audio.play().catch(e => console.error(`Playback failed for ${soundFile}:`, e));
     }
-
 
     // --- Date Helper Functions ---
     const getTodayISO = () => new Date().toISOString().split('T')[0];
     const getStartOfWeekISO = () => {
         const today = new Date();
-        const dayOfWeek = today.getDay(); // Sunday = 0, Monday = 1, etc.
+        const dayOfWeek = today.getDay();
         const date = new Date(today);
         date.setDate(today.getDate() - dayOfWeek);
         return date.toISOString().split('T')[0];
     };
     const getStartOfMonthISO = () => {
         const today = new Date();
-        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        // The toISOString method can have timezone issues, creating a "day before" bug.
-        // This simple workaround correctly formats the date regardless of timezone.
-        const year = firstDayOfMonth.getFullYear();
-        const month = String(firstDayOfMonth.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-        const day = String(firstDayOfMonth.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+        const d = new Date(today.getFullYear(), today.getMonth(), 1);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
     const getStartOfYearISO = () => {
         const today = new Date();
-        const firstDayOfYear = new Date(today.getFullYear(), 0, 1); // Month 0 is January
-        // Applying the same timezone-safe formatting
-        const year = firstDayOfYear.getFullYear();
-        const month = String(firstDayOfYear.getMonth() + 1).padStart(2, '0');
-        const day = String(firstDayOfYear.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+        return `${today.getFullYear()}-01-01`;
+    };
 
     // --- Data Management ---
     const loadData = () => {
         const savedData = JSON.parse(localStorage.getItem('appData'));
-        const todayISO = getTodayISO();
-        const startOfWeekISO = getStartOfWeekISO();
-        const startOfMonthISO = getStartOfMonthISO();
-        const startOfYearISO = getStartOfYearISO(); // Corrected variable name from your example
-
         if (savedData) {
-            // Merge saved data with the default structure to avoid errors if the structure changes
-            if (savedData.workout) {
-                appData.workout = {...appData.workout, ...savedData.workout };
-            }
-            if (savedData.user) {
-                appData.user = {...appData.user, ...savedData.user };
-            }
+            if (savedData.workout) appData.workout = {...appData.workout, ...savedData.workout };
+            if (savedData.user) appData.user = {...appData.user, ...savedData.user };
         }
 
-        // --- Date-based Resets (Hierarchical) ---
+        const todayISO = getTodayISO(),
+            startOfWeekISO = getStartOfWeekISO(),
+            startOfMonthISO = getStartOfMonthISO(),
+            startOfYearISO = getStartOfYearISO();
 
-        // 1. Check for a new Year
         if (appData.workout.currentYearStartDate !== startOfYearISO) {
-            console.log("New Year Detected! Resetting all totals.");
-            appData.workout.yearlyTotal = 0;
-            appData.workout.monthlyTotal = 0;
-            appData.workout.weeklyTotal = 0;
-            appData.workout.dailyTotal = 0;
+            appData.workout.yearlyTotal = appData.workout.monthlyTotal = appData.workout.weeklyTotal = appData.workout.dailyTotal = 0;
             appData.workout.currentYearStartDate = startOfYearISO;
-            appData.workout.currentMonthStartDate = startOfMonthISO; // Also update month/week starts
-            appData.workout.currentWeekStartDate = startOfWeekISO;
-        }
-        // 2. Else, check for a new Month
-        else if (appData.workout.currentMonthStartDate !== startOfMonthISO) {
-            console.log("New Month Detected! Resetting month, week, and day totals.");
-            appData.workout.monthlyTotal = 0;
-            appData.workout.weeklyTotal = 0;
-            appData.workout.dailyTotal = 0;
             appData.workout.currentMonthStartDate = startOfMonthISO;
-            appData.workout.currentWeekStartDate = startOfWeekISO; // Also update week start
-        }
-        // 3. Else, check for a new Week
-        else if (appData.workout.currentWeekStartDate !== startOfWeekISO) {
-            console.log("New Week Detected! Resetting week and day totals.");
-            appData.workout.weeklyTotal = 0;
-            appData.workout.dailyTotal = 0;
+            appData.workout.currentWeekStartDate = startOfWeekISO;
+        } else if (appData.workout.currentMonthStartDate !== startOfMonthISO) {
+            appData.workout.monthlyTotal = appData.workout.weeklyTotal = appData.workout.dailyTotal = 0;
+            appData.workout.currentMonthStartDate = startOfMonthISO;
+            appData.workout.currentWeekStartDate = startOfWeekISO;
+        } else if (appData.workout.currentWeekStartDate !== startOfWeekISO) {
+            appData.workout.weeklyTotal = appData.workout.dailyTotal = 0;
             appData.workout.currentWeekStartDate = startOfWeekISO;
         }
 
-        // 4. Always check for a new Day (This can be separate)
-        if (appData.workout.lastWorkoutDate !== todayISO) {
-            console.log("New Day Detected! Resetting day total.");
-            appData.workout.dailyTotal = 0;
-        }
-
-        // Finally, always set the last workout date to today
+        if (appData.workout.lastWorkoutDate !== todayISO) appData.workout.dailyTotal = 0;
         appData.workout.lastWorkoutDate = todayISO;
 
-
-        // Populate form fields with loaded user data (this part is unchanged)
         if (appData.user.age) ageInput.value = appData.user.age;
         if (appData.user.sex) sexSelect.value = appData.user.sex;
         if (appData.user.heightFt) heightFtInput.value = appData.user.heightFt;
         if (appData.user.heightIn) heightInInput.value = appData.user.heightIn;
-        if (appData.user.weightLbs) bmrWeightInput.value = appData.user.weightLbs;
-        if (appData.user.weight) weightInput.value = appData.user.weight;
+        if (appData.user.weightLbs) {
+            bmrWeightInput.value = appData.user.weightLbs;
+            weightSelect.value = appData.user.weightLbs;
+        }
 
-        saveData(); // Save back any corrections (like date resets)
+        saveData();
         updateDisplay();
     };
 
-
     const saveData = () => localStorage.setItem('appData', JSON.stringify(appData));
-
     const updateDisplay = () => {
         caloriesBurnedDiv.textContent = '';
         dailyTotalCaloriesDiv.textContent = `Today's total: ${appData.workout.dailyTotal.toFixed(2)}`;
-        weeklyTotalCaloriesDiv.textContent = `Week's total: ${appData.workout.weeklyTotal.toFixed(2)}`;
-        monthlyTotalCaloriesDiv.textContent = `Month's total: ${appData.workout.monthlyTotal.toFixed(2)}`;
-        yearlyTotalCaloriesDiv.textContent = `Year's total: ${appData.workout.yearlyTotal.toFixed(2)}`;
-        totalCaloriesDiv.textContent = `All time total: ${appData.workout.total.toFixed(2)}`;
+        weeklyTotalCaloriesDiv.textContent = `This week's total: ${appData.workout.weeklyTotal.toFixed(2)}`;
+        monthlyTotalCaloriesDiv.textContent = `This month's total: ${appData.workout.monthlyTotal.toFixed(2)}`;
+        yearlyTotalCaloriesDiv.textContent = `This year's total: ${appData.workout.yearlyTotal.toFixed(2)}`;
+        totalCaloriesDiv.textContent = `All-time total: ${appData.workout.total.toFixed(2)}`;
     };
 
-    // --- BMR Calculation (Mifflin-St Jeor Formula) ---
-    const calculateBmr = (weight, height, age, sex) => {
-        if (sex === "male") {
-            return (10 * weight) + (6.25 * height) - (5 * age) + 5;
-        } else {
-            return (10 * weight) + (6.25 * height) - (5 * age) - 161;
-        }
-    };
-
+    // --- BMR Calculation ---
     calculateBmrBtn.addEventListener('click', () => {
-        // Update state from inputs
-        appData.user.age = parseInt(ageInput.value, 10);
-        appData.user.sex = sexSelect.value;
-        appData.user.heightFt = parseInt(heightFtInput.value, 10);
-        appData.user.heightIn = parseInt(heightInInput.value, 10) || 0;
-        appData.user.weightLbs = parseInt(bmrWeightInput.value, 10);
-        appData.user.weight = parseInt(weightInput.value, 10);
-
+        appData.user = {
+            age: parseInt(ageInput.value, 10),
+            sex: sexSelect.value,
+            heightFt: parseInt(heightFtInput.value, 10),
+            heightIn: parseInt(heightInInput.value, 10) || 0,
+            weightLbs: parseInt(bmrWeightInput.value, 10)
+        };
         if (!appData.user.age || !appData.user.heightFt || !appData.user.weightLbs) {
             bmrResultDiv.textContent = "Please fill in all BMR fields.";
             return;
         }
-
-        // Convert to metric for calculation
         const weightKg = appData.user.weightLbs / 2.20462;
-        const totalHeightIn = (appData.user.heightFt * 12) + appData.user.heightIn;
-        const heightCm = totalHeightIn * 2.54;
-
-        const bmrValue = calculateBmr(weightKg, heightCm, appData.user.age, appData.user.sex);
-        bmrResultDiv.innerHTML = `Your estimated daily BMR is: <strong>${bmrValue.toFixed(0)} calories</strong>`;
-
-        // Save the new user data to localStorage
+        const heightCm = ((appData.user.heightFt * 12) + appData.user.heightIn) * 2.54;
+        const bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * appData.user.age) + (appData.user.sex === "male" ? 5 : -161);
+        bmrResultDiv.innerHTML = `Your estimated daily BMR is: <strong>${bmr.toFixed(0)} calories</strong>`;
+        weightSelect.value = appData.user.weightLbs;
         saveData();
     });
 
-    // --- Calorie Calculation (MET Formula) ---
+    // --- Calorie Calculation ---
     const calculateCalories = (weightInPounds, durationInSeconds, exercise, intensity) => {
-        const MET = metValues[exercise][intensity] || 7.0; // Default to 7.0 if not found
+        const MET = metValues[exercise] ? .[intensity] || 7.0;
         const weightInKg = weightInPounds / 2.20462;
         const durationInMinutes = durationInSeconds / 60;
-        const caloriesPerMinute = (MET * 3.5 * weightInKg) / 200;
-        return caloriesPerMinute * durationInMinutes;
+        return ((MET * 3.5 * weightInKg) / 200) * durationInMinutes;
     };
 
     // --- Main Timer Logic ---
     function startMainTimer(initialDuration) {
         let totalSeconds = initialDuration;
-
         mainCountdownInterval = setInterval(() => {
             if (totalSeconds < 0) {
-                // --- 1. PLAY THE FINAL SOUND ---
-                // Play a random end sound by passing the FILENAME
-                const randomIndex = Math.floor(Math.random() * soundFiles.end.length);
-                const randomSoundFile = soundFiles.end[randomIndex];
-                playSound(randomSoundFile);
-
-                // --- 2. STOP THE TIMER AND DO THE REST ---
                 clearInterval(mainCountdownInterval);
+                const randomIndex = Math.floor(Math.random() * soundFiles.end.length);
+                playSound(soundFiles.end[randomIndex]);
                 timerDisplay.textContent = "Time's up!";
 
                 const weight = parseInt(weightSelect.value, 10);
@@ -275,52 +205,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 const intensity = intensitySelect.value;
                 const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
 
-                // Add calories to all totals
                 appData.workout.dailyTotal += caloriesThisRound;
                 appData.workout.weeklyTotal += caloriesThisRound;
                 appData.workout.monthlyTotal += caloriesThisRound;
                 appData.workout.yearlyTotal += caloriesThisRound;
-                if (appData.workout.total !== undefined) {
-                    appData.workout.total += caloriesThisRound;
-                }
+                appData.workout.total += caloriesThisRound;
 
                 saveData();
                 updateDisplay();
 
                 memeElement.style.display = 'block';
                 timerDisplay.style.display = 'none';
-
                 memeTimeout = setTimeout(() => {
                     memeElement.style.display = 'none';
                     timerDisplay.style.display = 'block';
                 }, 30000);
-
-                timerDisplay.classList.remove('pre-countdown');
-
             } else {
-                // --- THIS IS THE CORRECTED PART ---
-                // Pass the FILENAMES from soundFiles directly to playSound
                 if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(soundFiles.remaining30);
                 if (totalSeconds === 20) playSound(soundFiles.remaining20);
                 if (totalSeconds === 10) playSound(soundFiles.remaining10);
                 if ((initialDuration - totalSeconds === 30) && (initialDuration >= 61)) playSound(soundFiles.elapsed30);
-                // --- END OF CORRECTION ---
 
-                const mins = Math.floor(totalSeconds / 60);
-                const secs = totalSeconds % 60;
-                timerDisplay.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
+                timerDisplay.textContent = `${Math.floor(totalSeconds / 60)}:${String(totalSeconds % 60).padStart(2, '0')}`;
                 totalSeconds--;
             }
         }, 1000);
     }
 
-
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // The complex "unlock" loop has been removed. We don't need it.
-        // We will create the sounds when we need them.
+        if (!isAudioUnlocked) {
+            // This is the most reliable way to silently unlock audio.
+            // It plays a tiny, silent, built-in audio clip.
+            const unlockAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+            unlockAudio.volume = 0;
+            unlockAudio.play().then(() => {
+                isAudioUnlocked = true;
+                console.log("Audio context unlocked successfully.");
+            }).catch(e => console.error("Audio context unlock failed.", e));
+        }
 
         const mainDuration = parseInt(secondsInput.value, 10);
         if (isNaN(mainDuration) || mainDuration <= 0) {
@@ -339,35 +264,21 @@ document.addEventListener('DOMContentLoaded', () => {
         preCountdownInterval = setInterval(() => {
             preSeconds--;
             timerDisplay.textContent = `Starting in ${preSeconds}...`;
-
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
-
-                // --- THIS IS THE ONLY "UNLOCK" WE NEED ---
-                // Play the 'begin' sound. This user-initiated action
-                // unlocks the audio context for all future sounds.
-                const beginSound = new Audio(soundFiles.begin);
-                playSound(beginSound);
-                // --- END OF THE ONLY UNLOCK ---
-
+                playSound(soundFiles.begin);
                 startMainTimer(mainDuration);
             }
         }, 1000);
     });
 
-
     // --- Event Listener for the Clear Button ---
     clearCaloriesBtn.addEventListener('click', () => {
-        if (confirm("Are you sure you want to clear all progress?")) {
-            appData.workout.dailyTotal = 0;
-            appData.workout.weeklyTotal = 0;
-            appData.workout.monthlyTotal = 0;
-            appData.workout.yearlyTotal = 0;
-            appData.workout.total = 0;
+        if (confirm("Are you sure you want to clear ALL calorie progress?")) {
+            appData.workout = {...appData.workout, dailyTotal: 0, weeklyTotal: 0, monthlyTotal: 0, yearlyTotal: 0, total: 0 };
             saveData();
             updateDisplay();
-            console.log("Weekly progress has been cleared.");
         }
     });
 
