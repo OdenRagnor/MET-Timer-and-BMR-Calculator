@@ -1,0 +1,188 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #030303;
+    color: antiquewhite;
+}
+
+#bmrResult {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 22px;
+}
+
+#bmrCalculator {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    max-width: 50%;
+    font-family: fantasy;
+    font-size: 32px;
+}
+
+#timerForm {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    max-width: 50%;
+    font-family: fantasy;
+    font-size: 32px;
+}
+
+#meme {
+    z-index: -1;
+    height: 60vh;
+    width: 100%;
+    /* Add this to ensure it has width */
+    background-image: url("image-8c0f6b39.gif");
+    /* Recommended additions for background GIFs */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: none;
+    position: fixed;
+}
+
+#minutes {
+    padding: 10px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#exercise {
+    padding: 5px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 160px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#intensity {
+    padding: 5px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 160px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#weight {
+    padding: 5px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 96px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#age {
+    padding: 2px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 64px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#sex {
+    padding: 2px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 120;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#height_ft {
+    padding: 2px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 32px;
+    font-family: fantasy;
+}
+
+#height_in {
+    padding: 2px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 48px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#bmrWeight {
+    padding: 2px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 96px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+#seconds {
+    padding: 5px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 70px;
+    font-family: fantasy;
+    margin-bottom: 2px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ccc;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: fantasy;
+}
+
+button:hover {
+    background-color: #b30000;
+}
+
+#timerDisplay {
+    font-size: 64px;
+    font-weight: bold;
+    color: whitesmoke;
+    justify-content: center;
+    z-index: 99;
+}
+
+label {
+    padding-top: 7px;
+    font-size: 24px;
+    font-family: fantasy;
+}
+
+#results {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+}

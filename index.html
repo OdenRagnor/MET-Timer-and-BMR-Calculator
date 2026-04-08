@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer & BMR Calculator</title>
+    <link rel="icon" href="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTVxam9nb2FyODFpYWJmMHVhbHd4ZjJpd2tjcmxvZTlsZDNrbDYweiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/fePFUmgEcrZ7tPhcJ7/giphy.gif" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="container">
+        <!-- BMR Calculator Section -->
+        <div id="bmrCalculator">
+            <div>BMR Calculator</div>
+            <div class="form-group">
+                <label for="age">Your Age:</label>
+                <input type="number" id="age" name="age" placeholder="32" min="1" required>
+            </div>
+            <div class="form-group">
+                <label for="sex">Your Gender:</label>
+                <select id="sex" name="sex" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Your Height:</label>
+                <input type="number" id="height_ft" placeholder="ft" min="1" required>
+                <input type="number" id="height_in" placeholder="in" min="0" max="11" required>
+            </div>
+            <div class="form-group">
+                <label for="bmrWeight">Your Weight (in lbs):</label>
+                <input type="number" id="bmrWeight" name="bmrWeight" placeholder="200" min="1" required>
+            </div>
+            <button type="button" id="calculateBmrBtn">Calculate BMR</button>
+            <div id="bmrResult"></div>
+        </div>
+
+        <!-- Original Timer Section -->
+        <form id="timerForm">
+            <div>Workout Timer</div>
+
+            <div class="form-group">
+                <label for="exercise">Exercise:</label>
+                <select id="exercise" name="exercise" required>
+                    <option value="pushups">Pushups</option>
+                    <option value="crunches">Crunches</option>
+                    <option value="vups">V-ups</option>
+                    <option value="squats">Squats</option>
+                    <option value="walkingLunges">Walking Lunges</option>
+                    <option value="ironMikes">Iron Mikes</option>
+                    <option value="jumpSquats">Jump Squats</option>
+                    <option value="planks">Planks</option>
+                    <option value="jumpingJacks">Jumping Jacks</option>
+                    <option value="sidePlanks">Side Planks</option>
+                    <option value="eightCountPushups">8-Count Pushups</option>
+                    <option value="burpees">Burpees</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="intensity">Intensity:</label>
+                <select id="intensity" name="intensity" required>
+                    <option value="light" title="Light Intensity: A comfortable, warm-up pace. You can easily hold a full conversation during the exercise.">Light</option>
+                    <option value="moderate" title="Moderate Intensity: A challenging but sustainable pace. Your breathing and heart rate are noticeably elevated, and you can talk, but not sing.">Moderate</option>
+                    <option value="vigorous" title="Vigorous Intensity: An all-out effort. Your breathing is deep and rapid, and you can only speak a few words at a time. This pace is difficult to maintain for long.">Vigorous</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="seconds">Set Timer (in seconds):</label>
+                <input type="number" id="seconds" name="seconds" placeholder="180" min="1" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Your Weight for Workout (in lbs):</label>
+                <input type="number" id="weight" name="weight" placeholder="150" min="1" required>
+            </div>
+            <button type="submit">Start Timer</button>
+        </form>
+
+        <div id="timerDisplay"></div>
+        <div id="results">
+            <div id="caloriesBurned"></div>
+            <div id="dailyTotalCalories"></div>
+            <div id="weeklyTotalCalories"></div>
+            <div id="monthlyTotalCalories"></div>
+            <div id="yearlyTotalCalories"></div>
+            <div id="allTimeTotalCalories"></div>
+            <button id="clearCaloriesBtn">Clear Progress</button>
+        </div>
+    </div>
+    <div id="meme" style="display:none;"></div>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
