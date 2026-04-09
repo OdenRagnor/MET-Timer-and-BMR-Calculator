@@ -218,3 +218,7 @@ label {
     color: #333;
     /* Ensure text color is readable */
 }
+
+#allTimeTotalCalories {
+    padding-bottom: 2px;
+}
