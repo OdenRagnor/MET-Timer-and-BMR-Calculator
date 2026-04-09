@@ -294,26 +294,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
+
+        // --- Audio Unlocking Logic ---
         if (!unlockedSounds.begin) {
+            console.log("Unlocking audio for the first time...");
+
+            // Temporarily mute all sounds
             for (const key in soundFiles) {
                 const fileOrFiles = soundFiles[key];
+
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
+                        audio.volume = 0; // Mute before playing
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
                     });
                 } else {
                     const audio = new Audio(fileOrFiles);
+                    audio.volume = 0; // Mute before playing
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
                 }
             }
+
+            // Mark as unlocked so this block doesn't run again
+            unlockedSounds.begin = true;
+
+            // After 2 seconds, restore the volume to maximum.
+            setTimeout(() => {
+                console.log("Restoring audio volume.");
+                // Restore volume on the single audio objects
+                for (const key in unlockedSounds) {
+                    if (key !== 'end' && key !== 'begin' && unlockedSounds[key]) {
+                        unlockedSounds[key].volume = 1.0;
+                    }
+                }
+                // Restore volume on the array of audio objects
+                unlockedSounds.end.forEach(audio => {
+                    audio.volume = 1.0;
+                });
+            }, 2000); // 2000 milliseconds = 2 seconds
         }
 
+        // --- Your Existing Timer Logic ---
         const mainDuration = parseInt(secondsInput.value, 10);
         if (isNaN(mainDuration) || mainDuration <= 0) {
             timerDisplay.textContent = "Please enter a valid number of seconds.";
@@ -334,11 +360,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
+
+                // This will now play with sound because the volume has been restored.
                 playSound(unlockedSounds.begin);
+
                 startMainTimer(mainDuration);
             }
         }, 1000);
     });
+
 
     // --- Event Listener for the Clear Button ---
     clearCaloriesBtn.addEventListener('click', () => {
