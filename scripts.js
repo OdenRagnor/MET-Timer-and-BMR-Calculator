@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         burpees: { light: 5.0, moderate: 8.0, vigorous: 11.0 },
         walk: { light: 2.8, moderate: 3.5, vigorous: 7.0 },
         run: { light: 7.0, moderate: 9.8, vigorous: 14.5 },
+        legTuckandTwist: { light: 3.5, moderate: 5.0, vigorous: 8.0 }
     };
 
 
@@ -381,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
         "eightCountPushups": "eightCountPushups.jpg",
         "burpees": "burpees.gif",
         "walk": "walk.gif",
+        "legTuckandTwist": "legTuckandTwist.jpg",
     };
 
     // 2. Get the elements we need to work with
