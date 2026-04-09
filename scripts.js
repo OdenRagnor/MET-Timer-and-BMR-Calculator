@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveData = () => localStorage.setItem('appData', JSON.stringify(appData));
 
     const updateDisplay = () => {
-        caloriesBurnedDiv.textContent = '';
+        caloriesBurnedDiv.textContent = `Last workout: +${caloriesThisRound.toFixed(2)} calories!`;
         dailyTotalCaloriesDiv.textContent = `Today's total: ${appData.workout.dailyTotal.toFixed(2)}`;
         weeklyTotalCaloriesDiv.textContent = `Week's total: ${appData.workout.weeklyTotal.toFixed(2)}`;
         monthlyTotalCaloriesDiv.textContent = `Month's total: ${appData.workout.monthlyTotal.toFixed(2)}`;
