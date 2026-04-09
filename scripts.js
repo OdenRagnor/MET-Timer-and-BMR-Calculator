@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sidePlanks: { light: 2.8, moderate: 4.0, vigorous: 5.0 },
         eightCountPushups: { light: 5.0, moderate: 8.0, vigorous: 11.0 },
         burpees: { light: 5.0, moderate: 8.0, vigorous: 11.0 },
+        walk: { light: 2.8, moderate: 3.5, vigorous: 7.0 },
+        run: { light: 7.0, moderate: 9.8, vigorous: 14.5 },
     };
 
 
