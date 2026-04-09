@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearCaloriesBtn = document.getElementById('clearCaloriesBtn');
     const exerciseSelect = document.getElementById('exercise');
     const intensitySelect = document.getElementById('intensity');
+    const startStopwatchBtn = document.getElementById('startStopwatchBtn');
+    const stopStopwatchBtn = document.getElementById('stopStopwatchBtn');
+    const resetStopwatchBtn = document.getElementById('resetStopwatchBtn');
+    const stopwatchDisplay = document.getElementById('stopwatchDisplay');
 
 
     // --- BMR DOM Elements ---
@@ -29,6 +33,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- State Variables ---
     let preCountdownInterval, mainCountdownInterval, memeTimeout;
+    let stopwatchInterval;
+    let stopwatchStartTime = 0;
+    let stopwatchElapsedTime = 0;
+    let isStopwatchRunning = false;
+
+    // --- Stopwatch Helper Functions ---
+
+    function formatTime(ms) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    function updateStopwatchDisplay() {
+        stopwatchElapsedTime = Date.now() - stopwatchStartTime;
+        stopwatchDisplay.textContent = formatTime(stopwatchElapsedTime);
+    }
+
+    function startStopwatch() {
+        if (isStopwatchRunning) return; // Don't do anything if it's already running
+
+        isStopwatchRunning = true;
+        // If starting from a paused state, adjust the start time
+        stopwatchStartTime = Date.now() - stopwatchElapsedTime;
+
+        stopwatchInterval = setInterval(updateStopwatchDisplay, 100); // Update every 100ms for smoothness
+
+        // Visually disable the start button
+        startStopwatchBtn.disabled = true;
+        stopStopwatchBtn.disabled = false;
+    }
+
+    function stopStopwatch() {
+        if (!isStopwatchRunning) return; // Don't do anything if it's not running
+
+        isStopwatchRunning = false;
+        clearInterval(stopwatchInterval);
+
+        // --- This is the key part: Calculate and save calories ---
+        const durationInSeconds = stopwatchElapsedTime / 1000;
+
+        // Make sure an exercise and weight are selected
+        const weight = parseInt(weightInput.value, 10);
+        const exercise = exerciseSelect.value;
+        const intensity = intensitySelect.value;
+
+        if (weight && exercise && durationInSeconds > 0 && metValues[exercise]) {
+            console.log(`Calculating calories for ${durationInSeconds.toFixed(2)} seconds...`);
+
+            const caloriesThisRound = calculateCalories(weight, durationInSeconds, exercise, intensity);
+
+            // Add to totals
+            appData.workout.dailyTotal += caloriesThisRound;
+            appData.workout.weeklyTotal += caloriesThisRound;
+            appData.workout.monthlyTotal += caloriesThisRound;
+            appData.workout.yearlyTotal += caloriesThisRound;
+            appData.workout.total += caloriesThisRound;
+
+            saveData(); // Save the updated totals
+            updateDisplay(); // Refresh the display on the page
+
+            // Show a temporary confirmation message
+            caloriesBurnedDiv.textContent = `Last workout: +${caloriesThisRound.toFixed(2)} calories!`;
+        } else {
+            console.warn("Could not calculate calories. Ensure weight, exercise, and intensity are set.");
+            caloriesBurnedDiv.textContent = "Please select exercise and weight.";
+        }
+
+        // Visually disable the stop button
+        startStopwatchBtn.disabled = false;
+        stopStopwatchBtn.disabled = true;
+    }
+
+    function resetStopwatch() {
+        clearInterval(stopwatchInterval);
+        isStopwatchRunning = false;
+        stopwatchElapsedTime = 0;
+        stopwatchDisplay.textContent = "00:00:00";
+
+        // Re-enable the start button
+        startStopwatchBtn.disabled = false;
+        stopStopwatchBtn.disabled = false;
+    }
+
+    // --- Add Event Listeners for the new Stopwatch buttons ---
+    startStopwatchBtn.addEventListener('click', startStopwatch);
+    stopStopwatchBtn.addEventListener('click', stopStopwatch);
+    resetStopwatchBtn.addEventListener('click', resetStopwatch);
 
     // Combined state object for all user and workout data
     let appData = {

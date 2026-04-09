@@ -26,8 +26,10 @@ body {
 #timerForm {
     position: fixed;
     top: 10px;
+    /* This will center it in the available space between the left and right elements */
     left: 50%;
     max-width: 50%;
+    /* Adjust width to ensure no overlap */
     font-family: fantasy;
     font-size: 32px;
 }
@@ -220,4 +222,30 @@ label {
 
 #allTimeTotalCalories {
     padding-bottom: 2px;
+}
+
+
+/* --- Add this new CSS for the Stopwatch --- */
+
+#stopwatchContainer {
+    position: fixed;
+    top: 320px;
+    left: 10px;
+    /* Positioned on the top right */
+    text-align: center;
+    font-family: fantasy;
+    font-size: 32px;
+}
+
+#stopwatchDisplay {
+    font-size: 48px;
+    font-weight: bold;
+    color: whitesmoke;
+    margin: 10px 0;
+}
+
+.stopwatch-buttons button {
+    margin: 0 5px;
+    padding: 8px 15px;
+    font-size: 14px;
 }
