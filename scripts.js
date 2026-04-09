@@ -298,18 +298,23 @@ document.addEventListener('DOMContentLoaded', () => {
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
         if (!unlockedSounds.begin) {
+
+
             for (const key in soundFiles) {
                 const fileOrFiles = soundFiles[key];
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
+                        audio.volume = 0;
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
+                        audio.volume = 1;
                     });
                 } else {
                     const audio = new Audio(fileOrFiles);
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
+                    audio.volume = 1;
                 }
             }
         }
