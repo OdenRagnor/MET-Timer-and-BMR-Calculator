@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const caloriesThisRound = calculateCalories(weight, durationInSeconds, exercise, intensity);
 
             // Add to totals
-            appData.workout.caloriesThisRound += caloriesThisRound;
+            appData.workout.caloriesThisRound1 = caloriesThisRound;
             appData.workout.dailyTotal += caloriesThisRound;
             appData.workout.weeklyTotal += caloriesThisRound;
             appData.workout.monthlyTotal += caloriesThisRound;
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Combined state object for all user and workout data
     let appData = {
         workout: {
-            caloriesThisRound: 0,
+            caloriesThisRound1: 0,
             dailyTotal: 0,
             weeklyTotal: 0,
             monthlyTotal: 0, // <-- ADD THIS
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
             appData.workout.monthlyTotal = 0;
             appData.workout.weeklyTotal = 0;
             appData.workout.dailyTotal = 0;
-            appData.workout.caloriesThisRound = 0;
+            appData.workout.caloriesThisRound1 = 0;
             appData.workout.currentYearStartDate = startOfYearISO;
             appData.workout.currentMonthStartDate = startOfMonthISO; // Also update month/week starts
             appData.workout.currentWeekStartDate = startOfWeekISO;
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
             appData.workout.monthlyTotal = 0;
             appData.workout.weeklyTotal = 0;
             appData.workout.dailyTotal = 0;
-            appData.workout.caloriesThisRound = 0;
+            appData.workout.caloriesThisRound1 = 0;
             appData.workout.currentMonthStartDate = startOfMonthISO;
             appData.workout.currentWeekStartDate = startOfWeekISO; // Also update week start
         }
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveData = () => localStorage.setItem('appData', JSON.stringify(appData));
 
     const updateDisplay = () => {
-        caloriesBurnedDiv.textContent = `Last round: ${appData.workout.caloriesThisRound.toFixed(2)}`;
+        caloriesBurnedDiv.textContent = `Last round: ${appData.workout.caloriesThisRound1.toFixed(2)}`;
         dailyTotalCaloriesDiv.textContent = `Today's total: ${appData.workout.dailyTotal.toFixed(2)}`;
         weeklyTotalCaloriesDiv.textContent = `Week's total: ${appData.workout.weeklyTotal.toFixed(2)}`;
         monthlyTotalCaloriesDiv.textContent = `Month's total: ${appData.workout.monthlyTotal.toFixed(2)}`;
@@ -360,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
 
+                appData.workout.caloriesThisRound1 += caloriesThisRound;
                 appData.workout.dailyTotal += caloriesThisRound;
                 appData.workout.weeklyTotal += caloriesThisRound;
                 appData.workout.monthlyTotal += caloriesThisRound;
