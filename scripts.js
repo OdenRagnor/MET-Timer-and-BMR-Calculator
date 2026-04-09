@@ -361,3 +361,48 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIAL PAGE LOAD ---
     loadData();
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // 1. Define the mapping of exercise values to image URLs
+    const exerciseImages = {
+        'crunches': 'image-ee48d671.gif',
+        'squats': 'squats.gif',
+        'pushups': 'Pushups.gif',
+        'run': 'run.png',
+        'jumpSquats': "jumpSquat.gif",
+        'vups': 'vUps.gif',
+        'walkingLunges': 'https://www.inspireusafoundation.org/wp-content/uploads/2023/08/bodyweight-walking-lunge-movement.gif',
+        "ironMikes": 'https://media.tenor.com/meIUZZ_2oZMAAAAM/lunge-jump.gif',
+        "planks": "planks.jpg",
+        "jumpingJacks": "jumpingJacks.gif",
+        "sidePlanks": "sidePlanks.jpg",
+        "eightCountPushups": "eightCountPushups.jpg",
+        "burpees": "burpees.gif",
+        "walk": "walk.gif",
+    };
+
+    // 2. Get the elements we need to work with
+    const exerciseSelect = document.getElementById('exercise');
+    const container = document.getElementById('exercise-container');
+
+    // 3. Listen for the 'change' event on the dropdown
+    exerciseSelect.addEventListener('change', function() {
+        // Get the value of the currently selected option
+        const selectedValue = this.value;
+
+        // Find the corresponding image URL from our map
+        const imageUrl = exerciseImages[selectedValue];
+
+        // 4. Update the background image
+        if (imageUrl) {
+            // If an image is found, set it as the background
+            container.style.backgroundImage = `url('${imageUrl}')`;
+        } else {
+            // If no image is mapped for the selected option, remove the background
+            container.style.backgroundImage = 'none';
+        }
+    });
+
+});

@@ -186,3 +186,35 @@ label {
     right: 10px;
     z-index: 1;
 }
+
+#exercise-container {
+    padding: 40px 40px;
+    /* Add some padding so the image is visible */
+    border-radius: 8px;
+    /* --- Key Background Properties --- */
+    background-size: cover;
+    /* Cover the entire container */
+    background-position: center;
+    /* Center the image */
+    background-repeat: no-repeat;
+    /* Add a smooth transition for the background change */
+    transition: background-image 0.5s ease-in-out;
+    height: 100px;
+    width: 100px;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 1;
+    opacity: 50%;
+}
+
+
+/* Optional: Add a semi-transparent overlay so the text is always readable */
+
+#exercise-container label,
+#exercise-container select {
+    position: relative;
+    z-index: 2;
+    color: #333;
+    /* Ensure text color is readable */
+}
