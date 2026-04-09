@@ -303,13 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
-                        audio.volume = 0;
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
                     });
                 } else {
                     const audio = new Audio(fileOrFiles);
-                    audio.volume = 0;
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
                 }
@@ -336,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
-                audio.volume = 1;
                 playSound(unlockedSounds.begin);
                 startMainTimer(mainDuration);
             }
