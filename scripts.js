@@ -302,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             for (const key in soundFiles) {
                 const fileOrFiles = soundFiles[key];
+                fileOrFiles.volume = 0;
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
@@ -309,12 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
                         audio.volume = 1;
+                        fileOrFiles.volume = 1;
                     });
                 } else {
                     const audio = new Audio(fileOrFiles);
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
                     audio.volume = 1;
+                    fileOrFiles.volume = 1;
                 }
             }
         }
