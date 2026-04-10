@@ -38,6 +38,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let stopwatchElapsedTime = 0;
     let isStopwatchRunning = false;
 
+    // --- Mute All ---
+    function muteAll() {
+        document.querySelectorAll("audio, video").forEach(element => {
+            element.muted = true;
+        });
+    }
+
+    function unmuteAll() {
+        document.querySelectorAll("audio, video").forEach(element => {
+            element.muted = false;
+        });
+    }
+
     // --- Stopwatch Helper Functions ---
 
     function formatTime(ms) {
@@ -404,6 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
+        muteAll();
         if (!unlockedSounds.begin) {
 
 
@@ -443,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
+                unmuteAll();
                 playSound(unlockedSounds.begin);
                 startMainTimer(mainDuration);
             }
