@@ -430,12 +430,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         const audio = new Audio(fileName);
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
+                        muteAll();
                     });
                 } else {
                     muteAll();
                     const audio = new Audio(fileOrFiles);
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
+                    muteAll();
                 }
             }
         }
@@ -457,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         preCountdownInterval = setInterval(() => {
             preSeconds--;
+            muteAll();
             timerDisplay.textContent = `Starting in ${preSeconds}...`;
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
