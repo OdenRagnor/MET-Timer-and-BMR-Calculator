@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let stopwatchElapsedTime = 0;
     let isStopwatchRunning = false;
     let soundsInitialized = false;
+    let availableVoices = [];
 
     function loadAndCheckVoices() {
         const voices = speechSynthesis.getVoices();
@@ -900,12 +901,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function loadAndCheckVoices() {
-        const voices = speechSynthesis.getVoices();
-        if (voices.length > 0) {
+        availableVoices = speechSynthesis.getVoices();
+        if (availableVoices.length > 0) {
             isTtsAvailable = true;
-            console.log("TTS is available. Voices loaded.");
+            console.log("TTS IS AVAILABLE. Voices have been loaded and are ready to use.");
         } else {
-            console.warn("TTS voice check failed. The browser has no voices. Will use MP3 fallback.");
+            // This will run in environments like Menlo
+            isTtsAvailable = false;
+            console.warn("TTS CHECK FAILED. No voices found. Will use MP3 fallback.");
         }
     }
 
@@ -949,12 +952,19 @@ document.addEventListener('DOMContentLoaded', () => {
      * Speaks the given text using the browser's Text-to-Speech engine.
      */
     function speak(text) {
+        if (!isTtsAvailable) return; // Safety check
         const utterance = new SpeechSynthesisUtterance(text);
+
+        // Find a good voice from the list we loaded earlier.
+        let desiredVoice = availableVoices.find(voice => voice.name.includes('Google US English'));
+        if (!desiredVoice) desiredVoice = availableVoices.find(voice => voice.name.includes('Microsoft Zira'));
+        if (!desiredVoice) desiredVoice = availableVoices.find(voice => voice.lang.includes('en-US'));
+
+        utterance.voice = desiredVoice;
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
         speechSynthesis.speak(utterance);
     }
-
 
     // --- Sound Definitions ---
     const soundFiles = {
@@ -963,7 +973,7 @@ document.addEventListener('DOMContentLoaded', () => {
         remaining30: "30-seconds-remaining.mp3",
         remaining20: "20-seconds-remaining.mp3",
         remaining10: "10-seconds-remaining.mp3",
-        end: ["you-re-done-bitch.mp3", "a-workout-only-a-mom-would-be-proud-of.mp3", "get-better-fuck-face.mp3", "go-back-to-sitting-down-lazy.mp3", "good-work-loser.mp3", "you-re-done-bitch.mp3", "you-performed-as-good-as-a-dying-cockroach-your-done.mp3", "i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3", "great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3", "aint-no-one-proud-of-that-deer.mp3"]
+        end: ["i-m-worried-about-your-health.mp3", "oppa-can-do-that-oppa-can-do-that-better-you-should-practice-more.mp3", "ha-ha-i-thought-you-d-be-stronger.mp3", "you-re-done-bitch.mp3", "a-workout-only-a-mom-would-be-proud-of.mp3", "get-better-fuck-face.mp3", "go-back-to-sitting-down-lazy.mp3", "good-work-loser.mp3", "you-re-done-bitch.mp3", "you-performed-as-good-as-a-dying-cockroach-your-done.mp3", "i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3", "great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3", "aint-no-one-proud-of-that-deer.mp3"]
     };
     let unlockedSounds = { end: [] };
 
@@ -974,6 +984,8 @@ document.addEventListener('DOMContentLoaded', () => {
             audioObject.play().catch(e => console.error(`Sound playback failed:`, e));
         }
     }
+
+
 
     // --- Date Helper Functions ---
     const getTodayISO = () => new Date().toISOString().split('T')[0];
@@ -1156,20 +1168,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 memeElement.style.display = 'block';
                 if (isTtsAvailable) {
-                    // If TTS works, pick a random phrase and speak it.
-                    console.log("Using TTS for insult.");
+                    console.log("SUCCESS: Using TTS for insult.");
                     const randomIndex = Math.floor(Math.random() * insults.length);
-                    const randomInsult = insults[randomIndex];
-                    speak(randomInsult);
+                    speak(insults[randomIndex]);
                 } else {
-                    // If TTS fails, fall back to the pre-recorded MP3s.
-                    console.log("Using MP3 fallback for insult.");
+                    console.log("FAIL: Using MP3 fallback for insult.");
                     if (unlockedSounds.end && unlockedSounds.end.length > 0) {
                         const randomIndex = Math.floor(Math.random() * unlockedSounds.end.length);
-                        const randomSound = unlockedSounds.end[randomIndex];
-                        playSound(randomSound);
-                        memeTimeout = setTimeout(() => { memeElement.style.display = 'none'; }, 30000);
+                        playSound(unlockedSounds.end[randomIndex]);
                     }
+                    memeTimeout = setTimeout(() => { memeElement.style.display = 'none'; }, 30000);
                 }
             } else {
                 if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(unlockedSounds.remaining30);
