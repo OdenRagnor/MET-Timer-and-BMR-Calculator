@@ -40,12 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let isStopwatchRunning = false;
     let soundsInitialized = false;
 
+    function loadAndCheckVoices() {
+        const voices = speechSynthesis.getVoices();
+        if (voices.length > 0) {
+            isTtsAvailable = true;
+            console.log("TTS is available. Voices loaded.");
+        } else {
+            console.warn("TTS voice check failed. The browser has no voices. Will use MP3 fallback.");
+        }
+    }
+    speechSynthesis.onvoiceschanged = loadAndCheckVoices;
+
     function loadVoices() {
         availableVoices = speechSynthesis.getVoices();
         console.log("Voices loaded:", availableVoices);
         // You can uncomment the line below to see all the available voices in your browser's console.
         // availableVoices.forEach(voice => console.log(`Name: ${voice.name}, Lang: ${voice.lang}`));
     }
+
 
     /**
      * UPDATED: The speak function now tries to find a specific voice.
@@ -845,6 +857,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetStopwatchBtn.addEventListener('click', resetStopwatch);
 
     // Combined state object for all user and workout data
+    let isTtsAvailable = false;
     let appData = {
         workout: {
             caloriesThisRound1: 0,
@@ -885,6 +898,16 @@ document.addEventListener('DOMContentLoaded', () => {
         run: { light: 7.0, moderate: 9.8, vigorous: 14.5 },
         legTuckandTwist: { light: 3.5, moderate: 5.0, vigorous: 8.0 }
     };
+
+    function loadAndCheckVoices() {
+        const voices = speechSynthesis.getVoices();
+        if (voices.length > 0) {
+            isTtsAvailable = true;
+            console.log("TTS is available. Voices loaded.");
+        } else {
+            console.warn("TTS voice check failed. The browser has no voices. Will use MP3 fallback.");
+        }
+    }
 
     function initializeAndUnlockSounds() {
         if (soundsInitialized) return;
@@ -1132,18 +1155,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateDisplay();
                 }
                 memeElement.style.display = 'block';
-                if (insults && insults.length > 0) {
-                    // 1. Pick a random insult from the new array.
+                if (isTtsAvailable) {
+                    // If TTS works, pick a random phrase and speak it.
+                    console.log("Using TTS for insult.");
                     const randomIndex = Math.floor(Math.random() * insults.length);
                     const randomInsult = insults[randomIndex];
-
-                    // 2. Use the speak() function to say it out loud.
                     speak(randomInsult);
                 } else {
-                    // Fallback to old audio if insults array is empty
-                    playSound(unlockedSounds.end[0]);
+                    // If TTS fails, fall back to the pre-recorded MP3s.
+                    console.log("Using MP3 fallback for insult.");
+                    if (unlockedSounds.end && unlockedSounds.end.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * unlockedSounds.end.length);
+                        const randomSound = unlockedSounds.end[randomIndex];
+                        playSound(randomSound);
+                        memeTimeout = setTimeout(() => { memeElement.style.display = 'none'; }, 30000);
+                    }
                 }
-                memeTimeout = setTimeout(() => { memeElement.style.display = 'none'; }, 30000);
             } else {
                 if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(unlockedSounds.remaining30);
                 if (totalSeconds === 20) playSound(unlockedSounds.remaining20);
