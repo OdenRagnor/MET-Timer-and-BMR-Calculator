@@ -414,6 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { once: true });
 
+    muteAll();
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
