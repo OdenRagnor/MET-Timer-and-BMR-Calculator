@@ -973,7 +973,7 @@ document.addEventListener('DOMContentLoaded', () => {
         remaining30: "30-seconds-remaining.mp3",
         remaining20: "20-seconds-remaining.mp3",
         remaining10: "10-seconds-remaining.mp3",
-        end: ["were-you-even-trying-you-were-so-slow.mp3", "i-m-worried-about-your-health.mp3", "oppa-can-do-that-oppa-can-do-that-better-you-should-practice-more.mp3", "ha-ha-i-thought-you-d-be-stronger.mp3", "you-re-done-bitch.mp3", "a-workout-only-a-mom-would-be-proud-of.mp3", "get-better-fuck-face.mp3", "go-back-to-sitting-down-lazy.mp3", "good-work-loser.mp3", "you-re-done-bitch.mp3", "you-performed-as-good-as-a-dying-cockroach-your-done.mp3", "i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3", "great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3", "aint-no-one-proud-of-that-deer.mp3"]
+        end: ["you-re-weaker-then-jerry-get-your-ass-out-of-the-air-your-stinking-up-the-whole-place.mp3", "you-re-fucked-stop-waisting-our-time-and-get-better.mp3", "were-you-even-trying-you-were-so-slow.mp3", "i-m-worried-about-your-health.mp3", "oppa-can-do-that-oppa-can-do-that-better-you-should-practice-more.mp3", "ha-ha-i-thought-you-d-be-stronger.mp3", "you-re-done-bitch.mp3", "a-workout-only-a-mom-would-be-proud-of.mp3", "get-better-fuck-face.mp3", "go-back-to-sitting-down-lazy.mp3", "good-work-loser.mp3", "you-re-done-bitch.mp3", "you-performed-as-good-as-a-dying-cockroach-your-done.mp3", "i-wish-i-could-say-i-was-proud-of-your-performance-just-stop.mp3", "great-work-don-t-forget-to-pick-up-your-pride-on-the-way-out-honey.mp3", "aint-no-one-proud-of-that-deer.mp3"]
     };
     let unlockedSounds = { end: [] };
 
