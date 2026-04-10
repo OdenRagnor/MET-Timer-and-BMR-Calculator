@@ -416,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         if (!unlockedSounds.begin) {
 
-            setGlobalVolume(0);
             for (const key in soundFiles) {
                 const fileOrFiles = soundFiles[key];
                 if (Array.isArray(fileOrFiles)) {
