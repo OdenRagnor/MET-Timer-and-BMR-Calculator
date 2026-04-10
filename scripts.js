@@ -395,7 +395,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
 
     }
-
+    document.body.addEventListener("click", () => {
+        if (!unlockedSounds._initialized) {
+            initializeSounds();
+        }
+    }, { once: true });
+    
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
