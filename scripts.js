@@ -38,19 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let stopwatchElapsedTime = 0;
     let isStopwatchRunning = false;
 
-    // --- Mute All ---
-    function muteAll() {
-        document.querySelectorAll("audio, video").forEach(element => {
-            element.muted = true;
-        });
-    }
-
-    function unmuteAll() {
-        document.querySelectorAll("audio, video").forEach(element => {
-            element.muted = false;
-        });
-    }
-
     // --- Stopwatch Helper Functions ---
 
     function formatTime(ms) {
@@ -414,11 +401,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { once: true });
 
-    muteAll();
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        muteAll();
         if (!unlockedSounds.begin) {
 
 
@@ -426,18 +411,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fileOrFiles = soundFiles[key];
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
-                        muteAll();
                         const audio = new Audio(fileName);
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
-                        muteAll();
                     });
                 } else {
-                    muteAll();
                     const audio = new Audio(fileOrFiles);
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
-                    muteAll();
                 }
             }
         }
@@ -445,7 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainDuration = parseInt(secondsInput.value, 10);
         if (isNaN(mainDuration) || mainDuration <= 0) {
             timerDisplay.textContent = "Please enter a valid number of seconds.";
-            muteAll();
             return;
         }
 
@@ -459,12 +439,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         preCountdownInterval = setInterval(() => {
             preSeconds--;
-            muteAll();
             timerDisplay.textContent = `Starting in ${preSeconds}...`;
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
-                unmuteAll();
                 playSound(unlockedSounds.begin);
                 startMainTimer(mainDuration);
             }
