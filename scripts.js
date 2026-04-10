@@ -404,6 +404,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
+
+        // Mute all audio immediately when the start process begins.
+        console.log("Muting audio for 8 seconds...");
+        muteAll();
+
+        // Set a timer to unmute everything after 8 seconds.
+        setTimeout(() => {
+            console.log("Unmuting audio.");
+            unmuteAll();
+        }, 8000); // 8000 milliseconds = 8 seconds
+
         if (!unlockedSounds.begin) {
 
 
@@ -512,3 +523,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
+function muteAll() {
+    document.querySelectorAll("audio, video").forEach(element => {
+        element.muted = true;
+    });
+}
+
+function unmuteAll() {
+    document.querySelectorAll("audio, video").forEach(element => {
+        element.muted = false;
+    });
+}
