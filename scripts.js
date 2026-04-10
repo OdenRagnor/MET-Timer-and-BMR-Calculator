@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeSounds();
         }
     }, { once: true });
-
+    setGlobalVolume(0);
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
