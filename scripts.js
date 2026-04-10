@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(preCountdownInterval);
         clearInterval(mainCountdownInterval);
         clearTimeout(memeTimeout);
-        setGlobalVolume(1);
+
         let preSeconds = 10;
         timerDisplay.classList.add('pre-countdown');
         timerDisplay.textContent = `Starting in ${preSeconds}...`;
@@ -453,6 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
+                setGlobalVolume(1);
                 playSound(unlockedSounds.begin);
                 startMainTimer(mainDuration);
             }
