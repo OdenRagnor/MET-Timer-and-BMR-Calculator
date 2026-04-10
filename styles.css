@@ -1,251 +1,764 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #030303;
-    color: antiquewhite;
+@media (max-width: 600px) {
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #030303;
+        color: antiquewhite;
+    }
+
+    #bmrResult {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+    }
+
+    #bmrCalculator {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        max-width: 50%;
+        font-family: fantasy;
+        font-size: 16px;
+    }
+
+    #timerForm {
+        position: fixed;
+        top: 10px;
+        /* This will center it in the available space between the left and right elements */
+        left: 50%;
+        max-width: 50%;
+        /* Adjust width to ensure no overlap */
+        font-family: fantasy;
+        font-size: 16px;
+    }
+
+    #meme {
+        z-index: -1;
+        height: 60vh;
+        width: 100%;
+        /* Add this to ensure it has width */
+        background-image: url("image-8c0f6b39.gif");
+        /* Recommended additions for background GIFs */
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: none;
+        position: fixed;
+    }
+
+    #minutes {
+        padding: 10px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    #exercise {
+        padding: 5px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #intensity {
+        padding: 5px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 84px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #weight {
+        padding: 5px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 72px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #age {
+        padding: 2px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 36px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #sex {
+        padding: 2px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 72px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #height_ft {
+        padding: 2px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 12px;
+        font-family: fantasy;
+    }
+
+    #height_in {
+        padding: 2px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 24px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #bmrWeight {
+        padding: 2px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 64px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #seconds {
+        padding: 5px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 36px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 12px;
+        color: #ccc;
+        background-color: #ff0000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: fantasy;
+    }
+
+    button:hover {
+        background-color: #b30000;
+    }
+
+    #timerDisplay {
+        font-size: 32px;
+        font-weight: bold;
+        color: whitesmoke;
+        justify-content: center;
+        z-index: 99;
+    }
+
+    label {
+        padding-top: 7px;
+        font-size: 12px;
+        font-family: fantasy;
+    }
+
+    #results {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1;
+    }
+
+    #exercise-container {
+        padding: 40px 40px;
+        /* Add some padding so the image is visible */
+        border-radius: 8px;
+        /* --- Key Background Properties --- */
+        background-size: cover;
+        /* Cover the entire container */
+        background-position: center;
+        /* Center the image */
+        background-repeat: no-repeat;
+        /* Add a smooth transition for the background change */
+        transition: background-image 0.5s ease-in-out;
+        height: 50px;
+        width: 50px;
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1;
+        opacity: 50%;
+    }
+
+
+    /* Optional: Add a semi-transparent overlay so the text is always readable */
+
+    #exercise-container label,
+    #exercise-container select {
+        position: relative;
+        z-index: 2;
+        color: #333;
+        /* Ensure text color is readable */
+    }
+
+    #allTimeTotalCalories {
+        padding-bottom: 2px;
+    }
+
+
+    /* --- Add this new CSS for the Stopwatch --- */
+
+    #stopwatchContainer {
+        position: fixed;
+        top: 250px;
+        left: 10px;
+        /* Positioned on the top right */
+        text-align: center;
+        font-family: fantasy;
+        font-size: 16px;
+    }
+
+    #stopwatchDisplay {
+        font-size: 24px;
+        font-weight: bold;
+        color: whitesmoke;
+        margin: 10px 0;
+    }
+
+    .stopwatch-buttons button {
+        margin: 0 5px;
+        padding: 8px 15px;
+        font-size: 12px;
+    }
 }
 
-#bmrResult {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 22px;
+@media (min-width: 600px) and (max-width: 1024px) {
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #030303;
+        color: antiquewhite;
+    }
+
+    #bmrResult {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+    }
+
+    #bmrCalculator {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        max-width: 50%;
+        font-family: fantasy;
+        font-size: 24px;
+    }
+
+    #timerForm {
+        position: fixed;
+        top: 10px;
+        /* This will center it in the available space between the left and right elements */
+        left: 50%;
+        max-width: 50%;
+        /* Adjust width to ensure no overlap */
+        font-family: fantasy;
+        font-size: 24px;
+    }
+
+    #meme {
+        z-index: -1;
+        height: 60vh;
+        width: 100%;
+        /* Add this to ensure it has width */
+        background-image: url("image-8c0f6b39.gif");
+        /* Recommended additions for background GIFs */
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: none;
+        position: fixed;
+    }
+
+    #minutes {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    #exercise {
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #intensity {
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 100px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #weight {
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 84px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #age {
+        padding: 2px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 48px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #sex {
+        padding: 2px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 96px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #height_ft {
+        padding: 2px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 16px;
+        font-family: fantasy;
+    }
+
+    #height_in {
+        padding: 2px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 32px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #bmrWeight {
+        padding: 2px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 84px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    #seconds {
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 48px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 12px;
+        color: #ccc;
+        background-color: #ff0000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: fantasy;
+    }
+
+    button:hover {
+        background-color: #b30000;
+    }
+
+    #timerDisplay {
+        font-size: 48px;
+        font-weight: bold;
+        color: whitesmoke;
+        justify-content: center;
+        z-index: 99;
+    }
+
+    label {
+        padding-top: 7px;
+        font-size: 16px;
+        font-family: fantasy;
+    }
+
+    #results {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1;
+    }
+
+    #exercise-container {
+        padding: 40px 40px;
+        /* Add some padding so the image is visible */
+        border-radius: 8px;
+        /* --- Key Background Properties --- */
+        background-size: cover;
+        /* Cover the entire container */
+        background-position: center;
+        /* Center the image */
+        background-repeat: no-repeat;
+        /* Add a smooth transition for the background change */
+        transition: background-image 0.5s ease-in-out;
+        height: 75px;
+        width: 75px;
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1;
+        opacity: 50%;
+    }
+
+
+    /* Optional: Add a semi-transparent overlay so the text is always readable */
+
+    #exercise-container label,
+    #exercise-container select {
+        position: relative;
+        z-index: 2;
+        color: #333;
+        /* Ensure text color is readable */
+    }
+
+    #allTimeTotalCalories {
+        padding-bottom: 2px;
+    }
+
+
+    /* --- Add this new CSS for the Stopwatch --- */
+
+    #stopwatchContainer {
+        position: fixed;
+        top: 300px;
+        left: 10px;
+        /* Positioned on the top right */
+        text-align: center;
+        font-family: fantasy;
+        font-size: 24px;
+    }
+
+    #stopwatchDisplay {
+        font-size: 32px;
+        font-weight: bold;
+        color: whitesmoke;
+        margin: 10px 0;
+    }
+
+    .stopwatch-buttons button {
+        margin: 0 5px;
+        padding: 8px 15px;
+        font-size: 12px;
+    }
 }
 
-#bmrCalculator {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    max-width: 50%;
-    font-family: fantasy;
-    font-size: 32px;
-}
+@media (min-width: 1024px) {
 
-#timerForm {
-    position: fixed;
-    top: 10px;
-    /* This will center it in the available space between the left and right elements */
-    left: 50%;
-    max-width: 50%;
-    /* Adjust width to ensure no overlap */
-    font-family: fantasy;
-    font-size: 32px;
-}
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #030303;
+        color: antiquewhite;
+    }
 
-#meme {
-    z-index: -1;
-    height: 60vh;
-    width: 100%;
-    /* Add this to ensure it has width */
-    background-image: url("image-8c0f6b39.gif");
-    /* Recommended additions for background GIFs */
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: none;
-    position: fixed;
-}
+    #bmrResult {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 22px;
+    }
 
-#minutes {
-    padding: 10px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+    #bmrCalculator {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        max-width: 50%;
+        font-family: fantasy;
+        font-size: 32px;
+    }
 
-#exercise {
-    padding: 5px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #timerForm {
+        position: fixed;
+        top: 10px;
+        /* This will center it in the available space between the left and right elements */
+        left: 50%;
+        max-width: 50%;
+        /* Adjust width to ensure no overlap */
+        font-family: fantasy;
+        font-size: 32px;
+    }
 
-#intensity {
-    padding: 5px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 160px;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #meme {
+        z-index: -1;
+        height: 60vh;
+        width: 100%;
+        /* Add this to ensure it has width */
+        background-image: url("image-8c0f6b39.gif");
+        /* Recommended additions for background GIFs */
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: none;
+        position: fixed;
+    }
 
-#weight {
-    padding: 5px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 96px;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #minutes {
+        padding: 10px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-#age {
-    padding: 2px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 64px;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #exercise {
+        padding: 5px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-#sex {
-    padding: 2px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 120;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #intensity {
+        padding: 5px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 160px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-#height_ft {
-    padding: 2px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 32px;
-    font-family: fantasy;
-}
+    #weight {
+        padding: 5px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 96px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-#height_in {
-    padding: 2px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 48px;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #age {
+        padding: 2px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 64px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-#bmrWeight {
-    padding: 2px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 96px;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #sex {
+        padding: 2px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 120;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-#seconds {
-    padding: 5px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ccc;
-    width: 70px;
-    font-family: fantasy;
-    margin-bottom: 2px;
-}
+    #height_ft {
+        padding: 2px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 32px;
+        font-family: fantasy;
+    }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #ccc;
-    background-color: #ff0000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: fantasy;
-}
+    #height_in {
+        padding: 2px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 48px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-button:hover {
-    background-color: #b30000;
-}
+    #bmrWeight {
+        padding: 2px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 96px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-#timerDisplay {
-    font-size: 64px;
-    font-weight: bold;
-    color: whitesmoke;
-    justify-content: center;
-    z-index: 99;
-}
+    #seconds {
+        padding: 5px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 70px;
+        font-family: fantasy;
+        margin-bottom: 2px;
+    }
 
-label {
-    padding-top: 7px;
-    font-size: 24px;
-    font-family: fantasy;
-}
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ccc;
+        background-color: #ff0000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: fantasy;
+    }
 
-#results {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 1;
-}
+    button:hover {
+        background-color: #b30000;
+    }
 
-#exercise-container {
-    padding: 40px 40px;
-    /* Add some padding so the image is visible */
-    border-radius: 8px;
-    /* --- Key Background Properties --- */
-    background-size: cover;
-    /* Cover the entire container */
-    background-position: center;
-    /* Center the image */
-    background-repeat: no-repeat;
-    /* Add a smooth transition for the background change */
-    transition: background-image 0.5s ease-in-out;
-    height: 100px;
-    width: 100px;
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    z-index: 1;
-    opacity: 50%;
-}
+    #timerDisplay {
+        font-size: 64px;
+        font-weight: bold;
+        color: whitesmoke;
+        justify-content: center;
+        z-index: 99;
+    }
+
+    label {
+        padding-top: 7px;
+        font-size: 24px;
+        font-family: fantasy;
+    }
+
+    #results {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1;
+    }
+
+    #exercise-container {
+        padding: 40px 40px;
+        /* Add some padding so the image is visible */
+        border-radius: 8px;
+        /* --- Key Background Properties --- */
+        background-size: cover;
+        /* Cover the entire container */
+        background-position: center;
+        /* Center the image */
+        background-repeat: no-repeat;
+        /* Add a smooth transition for the background change */
+        transition: background-image 0.5s ease-in-out;
+        height: 100px;
+        width: 100px;
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1;
+        opacity: 50%;
+    }
 
 
-/* Optional: Add a semi-transparent overlay so the text is always readable */
+    /* Optional: Add a semi-transparent overlay so the text is always readable */
 
-#exercise-container label,
-#exercise-container select {
-    position: relative;
-    z-index: 2;
-    color: #333;
-    /* Ensure text color is readable */
-}
+    #exercise-container label,
+    #exercise-container select {
+        position: relative;
+        z-index: 2;
+        color: #333;
+        /* Ensure text color is readable */
+    }
 
-#allTimeTotalCalories {
-    padding-bottom: 2px;
-}
+    #allTimeTotalCalories {
+        padding-bottom: 2px;
+    }
 
 
-/* --- Add this new CSS for the Stopwatch --- */
+    /* --- Add this new CSS for the Stopwatch --- */
 
-#stopwatchContainer {
-    position: fixed;
-    top: 360px;
-    left: 10px;
-    /* Positioned on the top right */
-    text-align: center;
-    font-family: fantasy;
-    font-size: 32px;
-}
+    #stopwatchContainer {
+        position: fixed;
+        top: 360px;
+        left: 10px;
+        /* Positioned on the top right */
+        text-align: center;
+        font-family: fantasy;
+        font-size: 32px;
+    }
 
-#stopwatchDisplay {
-    font-size: 48px;
-    font-weight: bold;
-    color: whitesmoke;
-    margin: 10px 0;
-}
+    #stopwatchDisplay {
+        font-size: 48px;
+        font-weight: bold;
+        color: whitesmoke;
+        margin: 10px 0;
+    }
 
-.stopwatch-buttons button {
-    margin: 0 5px;
-    padding: 8px 15px;
-    font-size: 14px;
+    .stopwatch-buttons button {
+        margin: 0 5px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 }
