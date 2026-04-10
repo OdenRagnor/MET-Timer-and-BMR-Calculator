@@ -37,8 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let stopwatchStartTime = 0;
     let stopwatchElapsedTime = 0;
     let isStopwatchRunning = false;
-
+    let isGloballyMuted = true;
     // --- Stopwatch Helper Functions ---
+    function playSound(audioObject) {
+        // ================== MODIFIED CODE START ==================
+        // Only play sound if the master mute is OFF
+        if (audioObject && !isGloballyMuted) {
+            // =================== MODIFIED CODE END ===================
+            audioObject.currentTime = 0;
+            audioObject.play().catch(e => console.error(`Sound playback failed:`, e));
+        }
+    }
 
     function formatTime(ms) {
         const totalSeconds = Math.floor(ms / 1000);
@@ -535,4 +544,4 @@ function unmuteAll() {
     });
 }
 
-muteAll()
+muteAll();
