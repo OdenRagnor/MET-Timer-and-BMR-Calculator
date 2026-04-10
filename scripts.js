@@ -416,13 +416,14 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         if (!unlockedSounds.begin) {
 
-
+            setGlobalVolume(0);
             for (const key in soundFiles) {
                 const fileOrFiles = soundFiles[key];
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
                         const audio = new Audio(fileName);
                         audio.play().then(() => audio.pause()).catch(e => {});
+                        setGlobalVolume(0);
                         unlockedSounds.end.push(audio);
                     });
                 } else {
