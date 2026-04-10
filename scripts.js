@@ -428,6 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 } else {
                     const audio = new Audio(fileOrFiles);
+                    setGlobalVolume(0);
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
                 }
