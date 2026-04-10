@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- DOM Elements ---
+    const startOverlay = document.getElementById('start-overlay');
     const timerForm = document.getElementById('timerForm');
     const secondsInput = document.getElementById('seconds');
     const timerDisplay = document.getElementById('timerDisplay');
@@ -181,25 +182,41 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeAndUnlockSounds() {
         if (soundsInitialized) return;
         console.log("Unlocking audio silently...");
+
         for (const key in soundFiles) {
             if (Array.isArray(soundFiles[key])) {
                 unlockedSounds[key] = soundFiles[key].map(fileName => {
                     const audio = new Audio(fileName);
                     audio.volume = 0;
-                    audio.play().then(() => audio.pause()).catch(() => {});
+                    // We don't even need the play/pause trick if we just load them
+                    audio.load();
                     audio.volume = 1;
                     return audio;
                 });
             } else {
                 const audio = new Audio(soundFiles[key]);
                 audio.volume = 0;
-                audio.play().then(() => audio.pause()).catch(() => {});
+                audio.load();
                 audio.volume = 1;
                 unlockedSounds[key] = audio;
             }
         }
         soundsInitialized = true;
         console.log("Audio is ready.");
+
+        // Hide the overlay after sounds are ready
+        startOverlay.style.display = 'none';
+    }
+
+    function playSound(audioObject) {
+        if (!soundsInitialized) {
+            console.warn("Sounds not ready yet!");
+            return;
+        }
+        if (audioObject) {
+            audioObject.currentTime = 0;
+            audioObject.play().catch(e => console.error("Sound playback failed:", e));
+        }
     }
 
     function playSound(audioObject) {
@@ -423,12 +440,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
+    startOverlay.addEventListener('click', initializeAndUnlockSounds, { once: true });
+
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
         // This now runs only if needed, on the FIRST click.
         if (!soundsInitialized) {
-            initializeAndUnlockSounds();
+            alert("Please click the 'Start' screen first to enable audio.");
+            return;
         }
 
         const mainDuration = parseInt(secondsInput.value, 10);

@@ -1,5 +1,21 @@
-@media (max-width: 800px) {
+#start-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1000;
+    /* Make sure it's on top of everything */
+}
 
+@media (max-width: 800px) {
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         display: flex;
@@ -10,12 +26,10 @@
         background-color: #030303;
         color: antiquewhite;
     }
-
     #bmrResult {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         font-size: 12px;
     }
-
     #bmrCalculator {
         position: fixed;
         top: 10px;
@@ -24,7 +38,6 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
-
     #timerForm {
         position: fixed;
         top: 10px;
@@ -35,7 +48,6 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
-
     #meme {
         z-index: -1;
         height: 60vh;
@@ -49,14 +61,12 @@
         display: none;
         position: fixed;
     }
-
     #minutes {
         padding: 10px;
         font-size: 12px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
-
     #exercise {
         padding: 5px;
         font-size: 12px;
@@ -66,7 +76,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #intensity {
         padding: 5px;
         font-size: 12px;
@@ -77,7 +86,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #weight {
         padding: 5px;
         font-size: 12px;
@@ -88,7 +96,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #age {
         padding: 2px;
         font-size: 12px;
@@ -99,7 +106,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #sex {
         padding: 2px;
         font-size: 12px;
@@ -110,7 +116,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #height_ft {
         padding: 2px;
         font-size: 12px;
@@ -120,7 +125,6 @@
         width: 32px;
         font-family: Arial, Helvetica, sans-serif;
     }
-
     #height_in {
         padding: 2px;
         font-size: 12px;
@@ -131,7 +135,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #bmrWeight {
         padding: 2px;
         font-size: 12px;
@@ -142,7 +145,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     #seconds {
         padding: 5px;
         font-size: 12px;
@@ -153,7 +155,6 @@
         font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
-
     button {
         padding: 10px 20px;
         font-size: 12px;
@@ -164,11 +165,9 @@
         cursor: pointer;
         font-family: Arial, Helvetica, sans-serif;
     }
-
     button:hover {
         background-color: #b30000;
     }
-
     #timerDisplay {
         font-size: 32px;
         font-weight: bold;
@@ -176,20 +175,17 @@
         justify-content: center;
         z-index: 99;
     }
-
     label {
         padding-top: 7px;
         font-size: 12px;
         font-family: Arial, Helvetica, sans-serif;
     }
-
     #results {
         position: fixed;
         bottom: 10px;
         right: 10px;
         z-index: 1;
     }
-
     #exercise-container {
         padding: 40px 40px;
         /* Add some padding so the image is visible */
@@ -210,10 +206,7 @@
         z-index: 1;
         opacity: 50%;
     }
-
-
     /* Optional: Add a semi-transparent overlay so the text is always readable */
-
     #exercise-container label,
     #exercise-container select {
         position: relative;
@@ -221,14 +214,10 @@
         color: #333;
         /* Ensure text color is readable */
     }
-
     #allTimeTotalCalories {
         padding-bottom: 2px;
     }
-
-
     /* --- Add this new CSS for the Stopwatch --- */
-
     #stopwatchContainer {
         position: fixed;
         top: 250px;
@@ -238,14 +227,12 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
-
     #stopwatchDisplay {
         font-size: 24px;
         font-weight: bold;
         color: whitesmoke;
         margin: 10px 0;
     }
-
     .stopwatch-buttons button {
         margin: 0 5px;
         padding: 8px 15px;
@@ -254,7 +241,6 @@
 }
 
 @media (min-width: 800px) and (max-width: 1024px) {
-
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         display: flex;
@@ -265,12 +251,10 @@
         background-color: #030303;
         color: antiquewhite;
     }
-
     #bmrResult {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         font-size: 16px;
     }
-
     #bmrCalculator {
         position: fixed;
         top: 10px;
@@ -279,7 +263,6 @@
         font-family: fantasy;
         font-size: 24px;
     }
-
     #timerForm {
         position: fixed;
         top: 10px;
@@ -290,7 +273,6 @@
         font-family: fantasy;
         font-size: 24px;
     }
-
     #meme {
         z-index: -1;
         height: 60vh;
@@ -304,14 +286,12 @@
         display: none;
         position: fixed;
     }
-
     #minutes {
         padding: 10px;
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
-
     #exercise {
         padding: 5px;
         font-size: 16px;
@@ -321,7 +301,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #intensity {
         padding: 5px;
         font-size: 16px;
@@ -332,7 +311,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #weight {
         padding: 5px;
         font-size: 16px;
@@ -343,7 +321,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #age {
         padding: 2px;
         font-size: 16px;
@@ -354,7 +331,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #sex {
         padding: 2px;
         font-size: 16px;
@@ -365,7 +341,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #height_ft {
         padding: 2px;
         font-size: 16px;
@@ -375,7 +350,6 @@
         width: 16px;
         font-family: fantasy;
     }
-
     #height_in {
         padding: 2px;
         font-size: 16px;
@@ -386,7 +360,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #bmrWeight {
         padding: 2px;
         font-size: 16px;
@@ -397,7 +370,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #seconds {
         padding: 5px;
         font-size: 16px;
@@ -408,7 +380,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     button {
         padding: 10px 20px;
         font-size: 12px;
@@ -419,11 +390,9 @@
         cursor: pointer;
         font-family: fantasy;
     }
-
     button:hover {
         background-color: #b30000;
     }
-
     #timerDisplay {
         font-size: 48px;
         font-weight: bold;
@@ -431,20 +400,17 @@
         justify-content: center;
         z-index: 99;
     }
-
     label {
         padding-top: 7px;
         font-size: 16px;
         font-family: fantasy;
     }
-
     #results {
         position: fixed;
         bottom: 10px;
         right: 10px;
         z-index: 1;
     }
-
     #exercise-container {
         padding: 40px 40px;
         /* Add some padding so the image is visible */
@@ -465,10 +431,7 @@
         z-index: 1;
         opacity: 50%;
     }
-
-
     /* Optional: Add a semi-transparent overlay so the text is always readable */
-
     #exercise-container label,
     #exercise-container select {
         position: relative;
@@ -476,14 +439,10 @@
         color: #333;
         /* Ensure text color is readable */
     }
-
     #allTimeTotalCalories {
         padding-bottom: 2px;
     }
-
-
     /* --- Add this new CSS for the Stopwatch --- */
-
     #stopwatchContainer {
         position: fixed;
         top: 300px;
@@ -493,14 +452,12 @@
         font-family: fantasy;
         font-size: 24px;
     }
-
     #stopwatchDisplay {
         font-size: 32px;
         font-weight: bold;
         color: whitesmoke;
         margin: 10px 0;
     }
-
     .stopwatch-buttons button {
         margin: 0 5px;
         padding: 8px 15px;
@@ -509,7 +466,6 @@
 }
 
 @media (min-width: 1024px) {
-
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         display: flex;
@@ -520,12 +476,10 @@
         background-color: #030303;
         color: antiquewhite;
     }
-
     #bmrResult {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         font-size: 22px;
     }
-
     #bmrCalculator {
         position: fixed;
         top: 10px;
@@ -534,7 +488,6 @@
         font-family: fantasy;
         font-size: 32px;
     }
-
     #timerForm {
         position: fixed;
         top: 10px;
@@ -545,7 +498,6 @@
         font-family: fantasy;
         font-size: 32px;
     }
-
     #meme {
         z-index: -1;
         height: 60vh;
@@ -559,14 +511,12 @@
         display: none;
         position: fixed;
     }
-
     #minutes {
         padding: 10px;
         font-size: 24px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
-
     #exercise {
         padding: 5px;
         font-size: 24px;
@@ -576,7 +526,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #intensity {
         padding: 5px;
         font-size: 24px;
@@ -587,7 +536,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #weight {
         padding: 5px;
         font-size: 24px;
@@ -598,7 +546,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #age {
         padding: 2px;
         font-size: 24px;
@@ -609,7 +556,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #sex {
         padding: 2px;
         font-size: 24px;
@@ -620,7 +566,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #height_ft {
         padding: 2px;
         font-size: 24px;
@@ -630,7 +575,6 @@
         width: 32px;
         font-family: fantasy;
     }
-
     #height_in {
         padding: 2px;
         font-size: 24px;
@@ -641,7 +585,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #bmrWeight {
         padding: 2px;
         font-size: 24px;
@@ -652,7 +595,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     #seconds {
         padding: 5px;
         font-size: 24px;
@@ -663,7 +605,6 @@
         font-family: fantasy;
         margin-bottom: 2px;
     }
-
     button {
         padding: 10px 20px;
         font-size: 16px;
@@ -674,11 +615,9 @@
         cursor: pointer;
         font-family: fantasy;
     }
-
     button:hover {
         background-color: #b30000;
     }
-
     #timerDisplay {
         font-size: 64px;
         font-weight: bold;
@@ -686,20 +625,17 @@
         justify-content: center;
         z-index: 99;
     }
-
     label {
         padding-top: 7px;
         font-size: 24px;
         font-family: fantasy;
     }
-
     #results {
         position: fixed;
         bottom: 10px;
         right: 10px;
         z-index: 1;
     }
-
     #exercise-container {
         padding: 40px 40px;
         /* Add some padding so the image is visible */
@@ -720,10 +656,7 @@
         z-index: 1;
         opacity: 50%;
     }
-
-
     /* Optional: Add a semi-transparent overlay so the text is always readable */
-
     #exercise-container label,
     #exercise-container select {
         position: relative;
@@ -731,14 +664,10 @@
         color: #333;
         /* Ensure text color is readable */
     }
-
     #allTimeTotalCalories {
         padding-bottom: 2px;
     }
-
-
     /* --- Add this new CSS for the Stopwatch --- */
-
     #stopwatchContainer {
         position: fixed;
         top: 360px;
@@ -748,14 +677,12 @@
         font-family: fantasy;
         font-size: 32px;
     }
-
     #stopwatchDisplay {
         font-size: 48px;
         font-weight: bold;
         color: whitesmoke;
         margin: 10px 0;
     }
-
     .stopwatch-buttons button {
         margin: 0 5px;
         padding: 8px 15px;
