@@ -38,6 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let stopwatchElapsedTime = 0;
     let isStopwatchRunning = false;
 
+    function setGlobalVolume(level) {
+        document.querySelectorAll("audio, video").forEach(element => {
+            // Ensure the level is between 0.0 and 1.0
+            element.volume = Math.max(0.0, Math.min(1.0, level));
+        });
+    }
+
+    // Set all audio/video volumes to 0
+    setGlobalVolume(0);
+
     // --- Stopwatch Helper Functions ---
 
     function formatTime(ms) {
@@ -432,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(preCountdownInterval);
         clearInterval(mainCountdownInterval);
         clearTimeout(memeTimeout);
-
+        setGlobalVolume(1);
         let preSeconds = 10;
         timerDisplay.classList.add('pre-countdown');
         timerDisplay.textContent = `Starting in ${preSeconds}...`;
