@@ -21,7 +21,7 @@
         top: 10px;
         left: 10px;
         max-width: 50%;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
 
@@ -32,7 +32,7 @@
         left: 50%;
         max-width: 50%;
         /* Adjust width to ensure no overlap */
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
 
@@ -63,7 +63,7 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         background-color: #ccc;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -74,7 +74,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 84px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -85,7 +85,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 72px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -96,7 +96,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 36px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -107,7 +107,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 72px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -118,7 +118,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 32px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     #height_in {
@@ -128,7 +128,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 32px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -139,7 +139,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 64px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -150,7 +150,7 @@
         border-radius: 5px;
         background-color: #ccc;
         width: 36px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         margin-bottom: 2px;
     }
 
@@ -162,7 +162,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     button:hover {
@@ -180,7 +180,7 @@
     label {
         padding-top: 7px;
         font-size: 12px;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     #results {
@@ -235,7 +235,7 @@
         left: 10px;
         /* Positioned on the top right */
         text-align: center;
-        font-family: fantasy;
+        font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
 
