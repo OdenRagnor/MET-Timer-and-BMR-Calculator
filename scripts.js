@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
 
-                appData.workout.caloriesThisRound1 += caloriesThisRound;
+                appData.workout.caloriesThisRound1 = caloriesThisRound;
                 appData.workout.dailyTotal += caloriesThisRound;
                 appData.workout.weeklyTotal += caloriesThisRound;
                 appData.workout.monthlyTotal += caloriesThisRound;
@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeSounds();
         }
     }, { once: true });
-    
+
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
