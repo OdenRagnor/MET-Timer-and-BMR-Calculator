@@ -426,11 +426,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fileOrFiles = soundFiles[key];
                 if (Array.isArray(fileOrFiles)) {
                     fileOrFiles.forEach(fileName => {
+                        muteAll();
                         const audio = new Audio(fileName);
                         audio.play().then(() => audio.pause()).catch(e => {});
                         unlockedSounds.end.push(audio);
                     });
                 } else {
+                    muteAll();
                     const audio = new Audio(fileOrFiles);
                     audio.play().then(() => audio.pause()).catch(e => {});
                     unlockedSounds[key] = audio;
@@ -441,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainDuration = parseInt(secondsInput.value, 10);
         if (isNaN(mainDuration) || mainDuration <= 0) {
             timerDisplay.textContent = "Please enter a valid number of seconds.";
+            muteAll();
             return;
         }
 
