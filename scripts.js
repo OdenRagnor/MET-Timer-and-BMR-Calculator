@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let stopwatchStartTime = 0;
     let stopwatchElapsedTime = 0;
     let isStopwatchRunning = false;
+    let soundsInitialized = false;
 
     function setGlobalVolume(level) {
         document.querySelectorAll("audio, video").forEach(element => {
@@ -176,6 +177,37 @@ document.addEventListener('DOMContentLoaded', () => {
         run: { light: 7.0, moderate: 9.8, vigorous: 14.5 },
         legTuckandTwist: { light: 3.5, moderate: 5.0, vigorous: 8.0 }
     };
+
+    function initializeAndUnlockSounds() {
+        if (soundsInitialized) return;
+        console.log("Unlocking audio silently...");
+        for (const key in soundFiles) {
+            if (Array.isArray(soundFiles[key])) {
+                unlockedSounds[key] = soundFiles[key].map(fileName => {
+                    const audio = new Audio(fileName);
+                    audio.volume = 0;
+                    audio.play().then(() => audio.pause()).catch(() => {});
+                    audio.volume = 1;
+                    return audio;
+                });
+            } else {
+                const audio = new Audio(soundFiles[key]);
+                audio.volume = 0;
+                audio.play().then(() => audio.pause()).catch(() => {});
+                audio.volume = 1;
+                unlockedSounds[key] = audio;
+            }
+        }
+        soundsInitialized = true;
+        console.log("Audio is ready.");
+    }
+
+    function playSound(audioObject) {
+        if (audioObject) {
+            audioObject.currentTime = 0;
+            audioObject.play().catch(e => console.error("Sound playback failed:", e));
+        }
+    }
 
 
     // --- Sound Definitions ---
@@ -361,82 +393,47 @@ document.addEventListener('DOMContentLoaded', () => {
             if (totalSeconds < 0) {
                 clearInterval(mainCountdownInterval);
                 timerDisplay.textContent = "Time's up!";
-                loadData();
-
-                const weight = parseInt(weightSelect.value, 10);
-                const duration = parseInt(secondsInput.value, 10);
-                const exercise = exerciseSelect.value;
-                const intensity = intensitySelect.value;
-
-                const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
-
-                appData.workout.caloriesThisRound1 = caloriesThisRound;
-                appData.workout.dailyTotal += caloriesThisRound;
-                appData.workout.weeklyTotal += caloriesThisRound;
-                appData.workout.monthlyTotal += caloriesThisRound;
-                appData.workout.yearlyTotal += caloriesThisRound;
-                appData.workout.total += caloriesThisRound;
-                saveData();
-                updateDisplay();
-
-                memeElement.style.display = 'block';
-                timerDisplay.style.display = 'block';
-
-                if (unlockedSounds.end.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * unlockedSounds.end.length);
-                    playSound(unlockedSounds.end[randomIndex]);
-                    memeTimeout = setTimeout(() => {
-                        memeElement.style.display = 'none';
-                    }, 30000);
+                const weight = parseInt(weightSelect.value, 10),
+                    duration = parseInt(secondsInput.value, 10),
+                    exercise = exerciseSelect.value,
+                    intensity = intensitySelect.value;
+                if (weight && duration && exercise && intensity) {
+                    const caloriesThisRound = calculateCalories(weight, duration, exercise, intensity);
+                    appData.workout.caloriesThisRound1 = caloriesThisRound;
+                    appData.workout.dailyTotal += caloriesThisRound;
+                    appData.workout.weeklyTotal += caloriesThisRound;
+                    appData.workout.monthlyTotal += caloriesThisRound;
+                    appData.workout.yearlyTotal += caloriesThisRound;
+                    appData.workout.total += caloriesThisRound;
+                    saveData();
+                    updateDisplay();
                 }
-
-                timerDisplay.classList.remove('pre-countdown');
+                memeElement.style.display = 'block';
+                if (unlockedSounds.end.length > 0) {
+                    playSound(unlockedSounds.end[Math.floor(Math.random() * unlockedSounds.end.length)]);
+                    memeTimeout = setTimeout(() => { memeElement.style.display = 'none'; }, 30000);
+                }
             } else {
                 if ((totalSeconds === 30) && (initialDuration >= 31)) playSound(unlockedSounds.remaining30);
                 if (totalSeconds === 20) playSound(unlockedSounds.remaining20);
                 if (totalSeconds === 10) playSound(unlockedSounds.remaining10);
-                if ((initialDuration - totalSeconds === 30) && (initialDuration >= 61)) playSound(unlockedSounds.elapsed30);
-
-                const mins = Math.floor(totalSeconds / 60);
-                const secs = totalSeconds % 60;
-                timerDisplay.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
+                timerDisplay.textContent = `${String(Math.floor(totalSeconds/60)).padStart(2,'0')}:${String(totalSeconds%60).padStart(2,'0')}`;
                 totalSeconds--;
             }
         }, 1000);
-
     }
-    document.body.addEventListener("click", () => {
-        if (!unlockedSounds._initialized) {
-            initializeSounds();
-        }
-    }, { once: true });
-    setGlobalVolume(0);
-    // --- Form Submission Logic ---
+
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        if (!unlockedSounds.begin) {
 
-            for (const key in soundFiles) {
-                const fileOrFiles = soundFiles[key];
-                if (Array.isArray(fileOrFiles)) {
-                    fileOrFiles.forEach(fileName => {
-                        const audio = new Audio(fileName);
-                        audio.play().then(() => audio.pause()).catch(e => {});
-                        setGlobalVolume(0);
-                        unlockedSounds.end.push(audio);
-                    });
-                } else {
-                    const audio = new Audio(fileOrFiles);
-                    setGlobalVolume(0);
-                    audio.play().then(() => audio.pause()).catch(e => {});
-                    unlockedSounds[key] = audio;
-                }
-            }
+        // This now runs only if needed, on the FIRST click.
+        if (!soundsInitialized) {
+            initializeAndUnlockSounds();
         }
 
         const mainDuration = parseInt(secondsInput.value, 10);
         if (isNaN(mainDuration) || mainDuration <= 0) {
-            timerDisplay.textContent = "Please enter a valid number of seconds.";
+            timerDisplay.textContent = "Please enter a valid number.";
             return;
         }
 
@@ -447,14 +444,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let preSeconds = 10;
         timerDisplay.classList.add('pre-countdown');
         timerDisplay.textContent = `Starting in ${preSeconds}...`;
-        setGlobalVolume(0);
+
         preCountdownInterval = setInterval(() => {
             preSeconds--;
             timerDisplay.textContent = `Starting in ${preSeconds}...`;
             if (preSeconds <= 0) {
                 clearInterval(preCountdownInterval);
                 timerDisplay.classList.remove('pre-countdown');
-                setGlobalVolume(1);
+                // The sound is already unlocked and ready, so this just works.
                 playSound(unlockedSounds.begin);
                 startMainTimer(mainDuration);
             }
