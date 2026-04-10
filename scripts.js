@@ -399,7 +399,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Form Submission Logic ---
     timerForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        if (!unlockedSounds.begin) {
+        if (!unlockedSounds._initialized) {
+            unlockedSounds._initialized = true;
 
 
             for (const key in soundFiles) {
