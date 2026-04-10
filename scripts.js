@@ -288,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay();
     };
 
+    muteAll()
 
     const saveData = () => localStorage.setItem('appData', JSON.stringify(appData));
 
