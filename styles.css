@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     font-size: 2rem;
     cursor: pointer;
     z-index: 1000;
