@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let preSeconds = 10;
         timerDisplay.classList.add('pre-countdown');
         timerDisplay.textContent = `Starting in ${preSeconds}...`;
-
+        setGlobalVolume(0);
         preCountdownInterval = setInterval(() => {
             preSeconds--;
             timerDisplay.textContent = `Starting in ${preSeconds}...`;
